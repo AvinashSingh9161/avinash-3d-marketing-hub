@@ -39,7 +39,7 @@ const HeroSection = () => {
             <div className="relative">
               <div className="w-72 h-72 sm:w-80 sm:h-80 rounded-full overflow-hidden border-4 border-white shadow-3d animate-float">
                 <img 
-                  src="/placeholder.svg" 
+                  src="https://i.postimg.cc/FzVmC0rk/Whats-App-Image-2025-05-07-at-17-14-34-420a56a6.jpg" 
                   alt="Avinash Singh" 
                   className="w-full h-full object-cover"
                 />
