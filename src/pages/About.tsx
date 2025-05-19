@@ -1,46 +1,50 @@
-
 import PageLayout from "@/components/layout/PageLayout";
-
 const About = () => {
   // Skills data
-  const skills = [
-    { name: "SEO", percentage: 90 },
-    { name: "Social Media Management", percentage: 95 },
-    { name: "Content Marketing", percentage: 85 },
-    { name: "Paid Advertising", percentage: 80 },
-    { name: "Analytics", percentage: 75 },
-    { name: "Email Marketing", percentage: 70 },
-    { name: "Graphic Design", percentage: 60 },
-  ];
-  
-  // Experience data
-  const experiences = [
-    {
-      position: "Digital Marketing Specialist",
-      company: "VisionTech PVT LTD",
-      period: "2023 - Present",
-      description: "Leading digital marketing efforts including social media management, SEO optimization, and paid advertising campaigns. Developed and executed comprehensive marketing strategies resulting in increased brand awareness and lead generation."
-    },
-    {
-      position: "Freelance Digital Marketer",
-      company: "Self-employed",
-      period: "2021 - 2023",
-      description: "Provided digital marketing services to clients including Prime Academy, NextAchiever's IAS & Cadets Prime. Managed social media accounts, created content strategies, and implemented SEO best practices."
-    }
-  ];
-  
-  // Education data
-  const education = [
-    {
-      degree: "Bachelor of Technology in Mechanical Engineering",
-      institution: "SRMS College of Engineering & Technology",
-      year: "2020",
-      description: "Graduated with honors, developing strong analytical and problem-solving skills that I now apply to digital marketing analytics and strategy development."
-    }
-  ];
+  const skills = [{
+    name: "SEO",
+    percentage: 90
+  }, {
+    name: "Social Media Management",
+    percentage: 95
+  }, {
+    name: "Content Marketing",
+    percentage: 85
+  }, {
+    name: "Paid Advertising",
+    percentage: 80
+  }, {
+    name: "Analytics",
+    percentage: 75
+  }, {
+    name: "Email Marketing",
+    percentage: 70
+  }, {
+    name: "Graphic Design",
+    percentage: 60
+  }];
 
-  return (
-    <PageLayout>
+  // Experience data
+  const experiences = [{
+    position: "Digital Marketing Specialist",
+    company: "VisionTech PVT LTD",
+    period: "2023 - Present",
+    description: "Leading digital marketing efforts including social media management, SEO optimization, and paid advertising campaigns. Developed and executed comprehensive marketing strategies resulting in increased brand awareness and lead generation."
+  }, {
+    position: "Freelance Digital Marketer",
+    company: "Self-employed",
+    period: "2021 - 2023",
+    description: "Provided digital marketing services to clients including Prime Academy, NextAchiever's IAS & Cadets Prime. Managed social media accounts, created content strategies, and implemented SEO best practices."
+  }];
+
+  // Education data
+  const education = [{
+    degree: "Bachelor of Technology in Mechanical Engineering",
+    institution: "SRMS College of Engineering & Technology",
+    year: "2020",
+    description: "Graduated with honors, developing strong analytical and problem-solving skills that I now apply to digital marketing analytics and strategy development."
+  }];
+  return <PageLayout>
       {/* Header */}
       <section className="py-20 bg-gradient-animation relative">
         <div className="container mx-auto px-6 relative z-10">
@@ -61,11 +65,7 @@ const About = () => {
             <div className="w-full lg:w-1/2">
               <div className="relative mb-8">
                 <div className="w-64 h-64 sm:w-72 sm:h-72 rounded-full overflow-hidden border-4 border-white shadow-3d mx-auto lg:mx-0">
-                  <img 
-                    src="/placeholder.svg" 
-                    alt="Avinash Singh" 
-                    className="w-full h-full object-cover"
-                  />
+                  <img src="/placeholder.svg" alt="Avinash Singh" className="w-full h-full object-cover" />
                 </div>
               </div>
               <div className="card-3d p-6">
@@ -77,11 +77,11 @@ const About = () => {
                   </li>
                   <li className="flex flex-wrap">
                     <span className="font-semibold w-32">Location:</span>
-                    <span className="text-gray-600">Bareilly, Uttar Pradesh, India</span>
+                    <span className="text-gray-600">Pratapgarh, Uttar Pradesh, India</span>
                   </li>
                   <li className="flex flex-wrap">
                     <span className="font-semibold w-32">Email:</span>
-                    <span className="text-gray-600">contact@avinashsingh.com</span>
+                    <span className="text-gray-600">Kuwar.avinashshingh82@gmail.com</span>
                   </li>
                   <li className="flex flex-wrap">
                     <span className="font-semibold w-32">Experience:</span>
@@ -134,20 +134,17 @@ const About = () => {
           
           <div className="max-w-3xl mx-auto">
             <div className="space-y-8">
-              {skills.map((skill, index) => (
-                <div key={index}>
+              {skills.map((skill, index) => <div key={index}>
                   <div className="flex justify-between mb-2">
                     <span className="font-medium">{skill.name}</span>
                     <span className="text-gray-600">{skill.percentage}%</span>
                   </div>
                   <div className="h-3 bg-gray-200 rounded-full overflow-hidden">
-                    <div 
-                      className="h-full bg-gradient-to-r from-brand-purple to-brand-blue rounded-full"
-                      style={{ width: `${skill.percentage}%` }}
-                    ></div>
+                    <div className="h-full bg-gradient-to-r from-brand-purple to-brand-blue rounded-full" style={{
+                  width: `${skill.percentage}%`
+                }}></div>
                   </div>
-                </div>
-              ))}
+                </div>)}
             </div>
           </div>
         </div>
@@ -162,8 +159,7 @@ const About = () => {
           </div>
           
           <div className="max-w-4xl mx-auto space-y-12">
-            {experiences.map((exp, index) => (
-              <div key={index} className="card-3d p-8 relative">
+            {experiences.map((exp, index) => <div key={index} className="card-3d p-8 relative">
                 <div className="absolute top-8 left-0 w-1 h-[calc(100%-4rem)] bg-gradient-to-b from-brand-purple to-brand-blue"></div>
                 <h3 className="text-xl font-bold mb-2">{exp.position}</h3>
                 <div className="flex items-center text-gray-600 mb-4">
@@ -172,8 +168,7 @@ const About = () => {
                   <span>{exp.period}</span>
                 </div>
                 <p className="text-gray-600">{exp.description}</p>
-              </div>
-            ))}
+              </div>)}
           </div>
         </div>
       </section>
@@ -187,8 +182,7 @@ const About = () => {
           </div>
           
           <div className="max-w-4xl mx-auto space-y-12">
-            {education.map((edu, index) => (
-              <div key={index} className="card-3d p-8">
+            {education.map((edu, index) => <div key={index} className="card-3d p-8">
                 <h3 className="text-xl font-bold mb-2">{edu.degree}</h3>
                 <div className="flex items-center text-gray-600 mb-4">
                   <span className="font-medium">{edu.institution}</span>
@@ -196,13 +190,10 @@ const About = () => {
                   <span>{edu.year}</span>
                 </div>
                 <p className="text-gray-600">{edu.description}</p>
-              </div>
-            ))}
+              </div>)}
           </div>
         </div>
       </section>
-    </PageLayout>
-  );
+    </PageLayout>;
 };
-
 export default About;
