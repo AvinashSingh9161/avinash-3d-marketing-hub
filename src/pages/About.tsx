@@ -81,7 +81,7 @@ const About = () => {
                   </li>
                   <li className="flex flex-wrap">
                     <span className="font-semibold w-32">Email:</span>
-                    <span className="text-gray-600">Kuwar.avinashshingh82@gmail.com</span>
+                    <span className="text-gray-600">Kuwar.avinashsingh82@gmail.com</span>
                   </li>
                   <li className="flex flex-wrap">
                     <span className="font-semibold w-32">Experience:</span>
