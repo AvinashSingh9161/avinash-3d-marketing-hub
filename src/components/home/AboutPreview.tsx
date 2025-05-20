@@ -1,6 +1,7 @@
 
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
+import { Avatar, AvatarImage } from "@/components/ui/avatar";
 
 const AboutPreview = () => {
   // Skills data
@@ -22,6 +23,15 @@ const AboutPreview = () => {
 
         <div className="flex flex-col lg:flex-row gap-12">
           <div className="w-full lg:w-1/2">
+            <div className="flex justify-center lg:justify-start mb-6">
+              <Avatar className="w-40 h-40 border-4 border-white shadow-3d">
+                <AvatarImage 
+                  src="https://i.postimg.cc/FzVmC0rk/Whats-App-Image-2025-05-07-at-17-14-34-420a56a6.jpg" 
+                  alt="Avinash Singh" 
+                  className="w-full h-full object-cover" 
+                />
+              </Avatar>
+            </div>
             <h3 className="text-2xl font-semibold mb-6">My Background</h3>
             <p className="text-gray-600 mb-4">
               I'm a passionate Digital Marketing Specialist with 2 years of experience helping brands establish their online presence and grow their audience. 

@@ -1,28 +1,17 @@
 import PageLayout from "@/components/layout/PageLayout";
+import { Avatar, AvatarImage } from "@/components/ui/avatar";
+
 const About = () => {
   // Skills data
-  const skills = [{
-    name: "SEO",
-    percentage: 90
-  }, {
-    name: "Social Media Management",
-    percentage: 95
-  }, {
-    name: "Content Marketing",
-    percentage: 85
-  }, {
-    name: "Paid Advertising",
-    percentage: 80
-  }, {
-    name: "Analytics",
-    percentage: 75
-  }, {
-    name: "Email Marketing",
-    percentage: 70
-  }, {
-    name: "Graphic Design",
-    percentage: 60
-  }];
+  const skills = [
+    { name: "SEO", percentage: 90 },
+    { name: "Social Media Management", percentage: 95 },
+    { name: "Content Marketing", percentage: 85 },
+    { name: "Paid Advertising", percentage: 80 },
+    { name: "Analytics", percentage: 75 },
+    { name: "Email Marketing", percentage: 70 },
+    { name: "Graphic Design", percentage: 60 },
+  ];
 
   // Experience data
   const experiences = [{
@@ -63,9 +52,15 @@ const About = () => {
         <div className="container mx-auto px-6">
           <div className="flex flex-col lg:flex-row items-center gap-12">
             <div className="w-full lg:w-1/2">
-              <div className="relative mb-8">
-                <div className="w-64 h-64 sm:w-72 sm:h-72 rounded-full overflow-hidden border-4 border-white shadow-3d mx-auto lg:mx-0">
-                  <img src="/placeholder.svg" alt="Avinash Singh" className="w-full h-full object-cover" />
+              <div className="relative mb-8 flex justify-center lg:justify-start">
+                <div className="w-64 h-64 sm:w-72 sm:h-72 rounded-full overflow-hidden border-4 border-white shadow-3d">
+                  <Avatar className="w-full h-full">
+                    <AvatarImage 
+                      src="https://i.postimg.cc/FzVmC0rk/Whats-App-Image-2025-05-07-at-17-14-34-420a56a6.jpg" 
+                      alt="Avinash Singh" 
+                      className="w-full h-full object-cover" 
+                    />
+                  </Avatar>
                 </div>
               </div>
               <div className="card-3d p-6">
