@@ -4,10 +4,11 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Button } from "@/components/ui/button";
 import { useToast } from "@/hooks/use-toast";
+import emailjs from 'emailjs-com';
+import { Loader } from "lucide-react";
+
 const Contact = () => {
-  const {
-    toast
-  } = useToast();
+  const { toast } = useToast();
   const [formData, setFormData] = useState({
     name: "",
     email: "",
@@ -15,35 +16,61 @@ const Contact = () => {
     message: ""
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
+
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-    const {
-      name,
-      value
-    } = e.target;
+    const { name, value } = e.target;
     setFormData(prev => ({
       ...prev,
       [name]: value
     }));
   };
-  const handleSubmit = (e: FormEvent) => {
+
+  const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
     setIsSubmitting(true);
 
-    // Simulate form submission
-    setTimeout(() => {
+    try {
+      // Initialize EmailJS with your public key
+      emailjs.init("XN33EQ1OGfmxBQvG1");
+      
+      // Send the email using EmailJS
+      const response = await emailjs.send(
+        "service_vt6nce2", // EmailJS service ID
+        "template_as969ew", // EmailJS template ID
+        {
+          from_name: formData.name,
+          from_email: formData.email,
+          subject: formData.subject || "Contact Form Submission",
+          message: formData.message,
+        }
+      );
+      
+      console.log("Email sent successfully:", response);
+      
       toast({
         title: "Message Sent!",
         description: "Thank you for your message. I'll get back to you soon."
       });
+      
+      // Reset form after successful submission
       setFormData({
         name: "",
         email: "",
         subject: "",
         message: ""
       });
+    } catch (error) {
+      console.error("Error sending email:", error);
+      toast({
+        title: "Error",
+        description: "Failed to send your message. Please try again later.",
+        variant: "destructive"
+      });
+    } finally {
       setIsSubmitting(false);
-    }, 1500);
+    }
   };
+
   return <PageLayout>
       {/* Header */}
       <section className="py-20 bg-gradient-animation relative">
@@ -158,7 +185,12 @@ const Contact = () => {
                     <Textarea id="message" name="message" value={formData.message} onChange={handleChange} required rows={6} placeholder="Tell me about your project or inquiry..." />
                   </div>
                   <Button type="submit" disabled={isSubmitting} className="bg-gradient-to-r from-brand-purple to-brand-blue hover:opacity-90 w-full md:w-auto">
-                    {isSubmitting ? "Sending..." : "Send Message"}
+                    {isSubmitting ? (
+                      <>
+                        <Loader className="mr-2 h-4 w-4 animate-spin" />
+                        Sending...
+                      </>
+                    ) : "Send Message"}
                   </Button>
                 </form>
               </div>
