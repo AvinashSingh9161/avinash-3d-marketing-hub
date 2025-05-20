@@ -14,7 +14,7 @@ const AboutPreview = () => {
   ];
 
   return (
-    <section className="py-20 bg-gray-50">
+    <section className="py-20 bg-gray-50" id="about-preview">
       <div className="container mx-auto px-6">
         <div className="text-center mb-16">
           <h2 className="text-3xl md:text-4xl font-bold font-poppins mb-4">About Me</h2>
@@ -27,14 +27,14 @@ const AboutPreview = () => {
               <Avatar className="w-40 h-40 border-4 border-white shadow-3d">
                 <AvatarImage 
                   src="https://i.postimg.cc/FzVmC0rk/Whats-App-Image-2025-05-07-at-17-14-34-420a56a6.jpg" 
-                  alt="Avinash Singh" 
+                  alt="Avinash Singh - Digital Marketing Specialist" 
                   className="w-full h-full object-cover" 
                 />
               </Avatar>
             </div>
             <h3 className="text-2xl font-semibold mb-6">My Background</h3>
             <p className="text-gray-600 mb-4">
-              I'm a passionate Digital Marketing Specialist with 2 years of experience helping brands establish their online presence and grow their audience. 
+              I'm a passionate Digital Marketing Specialist with 2+ years of experience helping brands establish their online presence and grow their audience. 
               With a background in Mechanical Engineering and specialized skills in digital marketing, I bring a unique analytical and creative perspective to marketing challenges.
             </p>
             <p className="text-gray-600 mb-8">
@@ -50,7 +50,7 @@ const AboutPreview = () => {
             </div>
             
             <Button asChild>
-              <Link to="/about">Learn More About Me</Link>
+              <Link to="/about" aria-label="Learn more about Avinash Singh's digital marketing expertise">Learn More About Me</Link>
             </Button>
           </div>
           
@@ -67,6 +67,7 @@ const AboutPreview = () => {
                     <div 
                       className="h-full bg-gradient-to-r from-brand-purple to-brand-blue rounded-full"
                       style={{ width: `${skill.percentage}%` }}
+                      aria-label={`${skill.name} skill level: ${skill.percentage}%`}
                     ></div>
                   </div>
                 </div>

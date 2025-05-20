@@ -1,5 +1,6 @@
 import PageLayout from "@/components/layout/PageLayout";
 import { Avatar, AvatarImage } from "@/components/ui/avatar";
+import { Helmet } from "react-helmet-async";
 
 const About = () => {
   // Skills data
@@ -34,22 +35,30 @@ const About = () => {
     description: "Graduated with honors, developing strong analytical and problem-solving skills that I now apply to digital marketing analytics and strategy development."
   }];
   return <PageLayout>
+      <Helmet>
+        <title>About Avinash Singh | Digital Marketing Specialist | SEO & Social Media Expert</title>
+        <meta name="description" content="Learn about Avinash Singh's background, skills, and experience in digital marketing, SEO, and social media management with over 2 years of expertise in the field." />
+        <meta name="keywords" content="digital marketing specialist, SEO expert, social media management, content marketing, Avinash Singh, Uttar Pradesh, India" />
+        <link rel="canonical" href="https://avinashsingh.com/about" />
+      </Helmet>
+      
       {/* Header */}
       <section className="py-20 bg-gradient-animation relative">
         <div className="container mx-auto px-6 relative z-10">
           <div className="text-center">
-            <h1 className="text-4xl md:text-5xl font-bold font-poppins mb-4 text-white">About Me</h1>
+            <h1 className="text-4xl md:text-5xl font-bold font-poppins mb-4 text-white">About Avinash Singh</h1>
             <div className="w-24 h-1 bg-white mx-auto mb-6"></div>
             <p className="text-lg text-white/90 max-w-3xl mx-auto">
-              Get to know more about me, my experience, and my approach to digital marketing
+              Digital Marketing Specialist with expertise in SEO, Social Media Management, and Content Marketing
             </p>
           </div>
         </div>
       </section>
       
       {/* Personal Info */}
-      <section className="py-20">
+      <section className="py-20" id="personal-info" aria-labelledby="personal-info-heading">
         <div className="container mx-auto px-6">
+          <h2 id="personal-info-heading" className="sr-only">Personal Information</h2>
           <div className="flex flex-col lg:flex-row items-center gap-12">
             <div className="w-full lg:w-1/2">
               <div className="relative mb-8 flex justify-center lg:justify-start">
@@ -57,7 +66,7 @@ const About = () => {
                   <Avatar className="w-full h-full">
                     <AvatarImage 
                       src="https://i.postimg.cc/FzVmC0rk/Whats-App-Image-2025-05-07-at-17-14-34-420a56a6.jpg" 
-                      alt="Avinash Singh" 
+                      alt="Avinash Singh - Digital Marketing Specialist" 
                       className="w-full h-full object-cover" 
                     />
                   </Avatar>
@@ -95,7 +104,7 @@ const About = () => {
               <h3 className="text-xl font-semibold text-brand-purple mb-4">Digital Marketing Specialist</h3>
               
               <p className="text-gray-600 mb-6">
-                I'm a passionate digital marketing professional with 2 years of experience, specializing in helping brands establish a strong online presence and drive growth through data-driven strategies and creative campaigns.
+                I'm a passionate digital marketing professional with 2+ years of experience, specializing in helping brands establish a strong online presence and drive growth through data-driven strategies and creative campaigns.
               </p>
               
               <p className="text-gray-600 mb-6">
@@ -120,11 +129,12 @@ const About = () => {
       </section>
       
       {/* Skills */}
-      <section className="py-20 bg-gray-50">
+      <section className="py-20 bg-gray-50" id="skills" aria-labelledby="skills-heading">
         <div className="container mx-auto px-6">
           <div className="text-center mb-16">
-            <h2 className="text-3xl md:text-4xl font-bold font-poppins mb-4">My Skills</h2>
+            <h2 id="skills-heading" className="text-3xl md:text-4xl font-bold font-poppins mb-4">My Skills & Expertise</h2>
             <div className="w-24 h-1 bg-gradient-to-r from-brand-purple to-brand-blue mx-auto mb-6"></div>
+            <p className="text-gray-600 max-w-2xl mx-auto">Specialized skills honed through years of practical experience in the digital marketing industry.</p>
           </div>
           
           <div className="max-w-3xl mx-auto">
@@ -146,11 +156,12 @@ const About = () => {
       </section>
       
       {/* Experience */}
-      <section className="py-20">
+      <section className="py-20" id="experience" aria-labelledby="experience-heading">
         <div className="container mx-auto px-6">
           <div className="text-center mb-16">
-            <h2 className="text-3xl md:text-4xl font-bold font-poppins mb-4">Work Experience</h2>
+            <h2 id="experience-heading" className="text-3xl md:text-4xl font-bold font-poppins mb-4">Professional Experience</h2>
             <div className="w-24 h-1 bg-gradient-to-r from-brand-purple to-brand-blue mx-auto mb-6"></div>
+            <p className="text-gray-600 max-w-2xl mx-auto">My journey in the digital marketing industry and the valuable experience I've gained along the way.</p>
           </div>
           
           <div className="max-w-4xl mx-auto space-y-12">
@@ -169,11 +180,12 @@ const About = () => {
       </section>
       
       {/* Education */}
-      <section className="py-20 bg-gray-50">
+      <section className="py-20 bg-gray-50" id="education" aria-labelledby="education-heading">
         <div className="container mx-auto px-6">
           <div className="text-center mb-16">
-            <h2 className="text-3xl md:text-4xl font-bold font-poppins mb-4">Education</h2>
+            <h2 id="education-heading" className="text-3xl md:text-4xl font-bold font-poppins mb-4">Education Background</h2>
             <div className="w-24 h-1 bg-gradient-to-r from-brand-purple to-brand-blue mx-auto mb-6"></div>
+            <p className="text-gray-600 max-w-2xl mx-auto">My educational foundation that helps me bring a unique perspective to digital marketing.</p>
           </div>
           
           <div className="max-w-4xl mx-auto space-y-12">
