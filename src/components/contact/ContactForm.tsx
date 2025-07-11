@@ -1,10 +1,12 @@
 
-import { useState } from "react";
+import { useState, useCallback } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { Loader } from "lucide-react";
 import emailjs from 'emailjs-com';
+
+import { RateLimit, sanitize, securityLog } from "@/lib/security";
 
 import { Button } from "@/components/ui/button";
 import { useToast } from "@/hooks/use-toast";
@@ -19,19 +21,43 @@ import {
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 
-// Define validation schema using Zod
+// Enhanced security validation schema using Zod
 const formSchema = z.object({
-  name: z.string().min(2, { message: "Name must be at least 2 characters" }).max(50),
-  email: z.string().email({ message: "Please enter a valid email address" }),
-  subject: z.string().optional(),
-  message: z.string().min(10, { message: "Message must be at least 10 characters" }),
+  name: z.string()
+    .min(2, { message: "Name must be at least 2 characters" })
+    .max(50, { message: "Name cannot exceed 50 characters" })
+    .regex(/^[a-zA-Z\s'-]+$/, { message: "Name contains invalid characters" }),
+  email: z.string()
+    .email({ message: "Please enter a valid email address" })
+    .max(254, { message: "Email address too long" }),
+  subject: z.string()
+    .max(100, { message: "Subject cannot exceed 100 characters" })
+    .optional(),
+  message: z.string()
+    .min(10, { message: "Message must be at least 10 characters" })
+    .max(2000, { message: "Message cannot exceed 2000 characters" }),
 });
+
+// Security configuration
+const EMAILJS_CONFIG = {
+  publicKey: "XN33EQ1OGfmxBQvG1",
+  serviceId: "service_vt6nce2",
+  templateId: "template_as969ew"
+} as const;
+
+// Initialize rate limiter
+const contactFormRateLimit = new RateLimit(3, 60000); // 3 submissions per minute
 
 type FormValues = z.infer<typeof formSchema>;
 
 const ContactForm = () => {
   const { toast } = useToast();
   const [isSubmitting, setIsSubmitting] = useState(false);
+  
+  // Get client identifier for rate limiting (fallback for IP)
+  const getClientId = useCallback((): string => {
+    return 'contact-form-' + (navigator.userAgent + window.location.href).slice(0, 20);
+  }, []);
 
   // Initialize react-hook-form
   const form = useForm<FormValues>({
@@ -45,22 +71,65 @@ const ContactForm = () => {
   });
 
   const onSubmit = async (data: FormValues) => {
+    const clientId = getClientId();
+    
+    // Enhanced security checks
+    if (!contactFormRateLimit.check(clientId)) {
+      const remainingTime = Math.ceil(contactFormRateLimit.getRemainingTime(clientId) / 1000);
+      securityLog.rateLimitExceeded(clientId);
+      toast({
+        title: "Rate limit exceeded",
+        description: `Please wait ${remainingTime} seconds before submitting another message.`,
+        variant: "destructive"
+      });
+      return;
+    }
+
+    // Additional input validation
+    if (!sanitize.name(data.name)) {
+      securityLog.suspiciousInput(data.name, 'Invalid name format');
+      toast({
+        title: "Invalid input",
+        description: "Please enter a valid name.",
+        variant: "destructive"
+      });
+      return;
+    }
+
+    if (!sanitize.email(data.email)) {
+      securityLog.suspiciousInput(data.email, 'Invalid email format');
+      toast({
+        title: "Invalid input",
+        description: "Please enter a valid email address.",
+        variant: "destructive"
+      });
+      return;
+    }
+
     setIsSubmitting(true);
 
     try {
-      // Initialize EmailJS with your public key
-      emailjs.init("XN33EQ1OGfmxBQvG1");
+      // Validate configuration exists
+      if (!EMAILJS_CONFIG.publicKey || !EMAILJS_CONFIG.serviceId || !EMAILJS_CONFIG.templateId) {
+        throw new Error('EmailJS configuration is incomplete');
+      }
+
+      // Initialize EmailJS with secure configuration
+      emailjs.init(EMAILJS_CONFIG.publicKey);
       
-      // Send the email using EmailJS
+      // Sanitize and escape data for security (multiple layers)
+      const sanitizedData = {
+        from_name: sanitize.html(sanitize.removeScripts(data.name.trim())),
+        from_email: sanitize.html(data.email.trim().toLowerCase()),
+        subject: sanitize.html(sanitize.removeScripts((data.subject || "Contact Form Submission").trim())),
+        message: sanitize.html(sanitize.removeScripts(data.message.trim())),
+      };
+      
+      // Send the email using EmailJS with sanitized data
       const response = await emailjs.send(
-        "service_vt6nce2", // EmailJS service ID
-        "template_as969ew", // EmailJS template ID
-        {
-          from_name: data.name,
-          from_email: data.email,
-          subject: data.subject || "Contact Form Submission",
-          message: data.message,
-        }
+        EMAILJS_CONFIG.serviceId,
+        EMAILJS_CONFIG.templateId,
+        sanitizedData
       );
       
       console.log("Email sent successfully:", response);
