@@ -11,7 +11,7 @@ interface RateLimitEntry {
 const rateLimitStore = new Map<string, RateLimitEntry>();
 
 /**
- * Rate limiting implementation
+ * Enhanced rate limiting implementation with browser fingerprinting
  */
 export class RateLimit {
   private maxRequests: number;
@@ -22,12 +22,35 @@ export class RateLimit {
     this.windowMs = windowMs;
   }
 
-  check(identifier: string): boolean {
+  /**
+   * Generate a more robust client identifier
+   */
+  private generateClientId(): string {
+    const fingerprint = [
+      navigator.userAgent,
+      navigator.language,
+      screen.width + 'x' + screen.height,
+      new Date().getTimezoneOffset(),
+      navigator.hardwareConcurrency || 0
+    ].join('|');
+    
+    // Simple hash function for consistent identifier
+    let hash = 0;
+    for (let i = 0; i < fingerprint.length; i++) {
+      const char = fingerprint.charCodeAt(i);
+      hash = ((hash << 5) - hash) + char;
+      hash = hash & hash; // Convert to 32-bit integer
+    }
+    return Math.abs(hash).toString();
+  }
+
+  check(identifier?: string): boolean {
+    const clientId = identifier || this.generateClientId();
     const now = Date.now();
-    const entry = rateLimitStore.get(identifier);
+    const entry = rateLimitStore.get(clientId);
 
     if (!entry || now > entry.resetTime) {
-      rateLimitStore.set(identifier, {
+      rateLimitStore.set(clientId, {
         count: 1,
         resetTime: now + this.windowMs
       });
@@ -35,6 +58,7 @@ export class RateLimit {
     }
 
     if (entry.count >= this.maxRequests) {
+      securityLog.rateLimitExceeded(clientId);
       return false;
     }
 
@@ -42,8 +66,9 @@ export class RateLimit {
     return true;
   }
 
-  getRemainingTime(identifier: string): number {
-    const entry = rateLimitStore.get(identifier);
+  getRemainingTime(identifier?: string): number {
+    const clientId = identifier || this.generateClientId();
+    const entry = rateLimitStore.get(clientId);
     if (!entry) return 0;
     return Math.max(0, entry.resetTime - Date.now());
   }
@@ -115,14 +140,31 @@ export const sanitize = {
   },
 
   /**
-   * Validate name with security checks
+   * Validate name with enhanced security checks
    */
   name(name: string): boolean {
     const nameRegex = /^[a-zA-Z\s'-]+$/;
-    return nameRegex.test(name) && 
+    const suspiciousPatterns = [
+      /<script/i,
+      /javascript:/i,
+      /on\w+=/i,
+      /data:/i,
+      /vbscript:/i,
+      /<iframe/i,
+      /<object/i,
+      /<embed/i
+    ];
+
+    const isValid = nameRegex.test(name) && 
            name.length >= 2 && 
            name.length <= 50 &&
-           !/<script/i.test(name);
+           !suspiciousPatterns.some(pattern => pattern.test(name));
+
+    if (!isValid && suspiciousPatterns.some(pattern => pattern.test(name))) {
+      securityLog.suspiciousInput(name, 'Dangerous pattern in name field');
+    }
+
+    return isValid;
   }
 };
 

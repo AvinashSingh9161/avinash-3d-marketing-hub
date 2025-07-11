@@ -7,6 +7,7 @@ import { Loader } from "lucide-react";
 import emailjs from 'emailjs-com';
 
 import { RateLimit, sanitize, securityLog } from "@/lib/security";
+import { getEmailJSConfig, validateEmailJSConfig } from "@/lib/config";
 
 import { Button } from "@/components/ui/button";
 import { useToast } from "@/hooks/use-toast";
@@ -38,15 +39,17 @@ const formSchema = z.object({
     .max(2000, { message: "Message cannot exceed 2000 characters" }),
 });
 
-// Security configuration
-const EMAILJS_CONFIG = {
-  publicKey: "XN33EQ1OGfmxBQvG1",
-  serviceId: "service_vt6nce2",
-  templateId: "template_as969ew"
-} as const;
+// Secure configuration helper
+const getSecureEmailJSConfig = () => {
+  const config = getEmailJSConfig();
+  if (!validateEmailJSConfig(config)) {
+    throw new Error('Invalid or missing EmailJS configuration. Please check your credentials.');
+  }
+  return config;
+};
 
-// Initialize rate limiter
-const contactFormRateLimit = new RateLimit(3, 60000); // 3 submissions per minute
+// Enhanced rate limiter with improved fingerprinting
+const contactFormRateLimit = new RateLimit(3, 60000);
 
 type FormValues = z.infer<typeof formSchema>;
 
@@ -54,10 +57,6 @@ const ContactForm = () => {
   const { toast } = useToast();
   const [isSubmitting, setIsSubmitting] = useState(false);
   
-  // Get client identifier for rate limiting (fallback for IP)
-  const getClientId = useCallback((): string => {
-    return 'contact-form-' + (navigator.userAgent + window.location.href).slice(0, 20);
-  }, []);
 
   // Initialize react-hook-form
   const form = useForm<FormValues>({
@@ -71,12 +70,9 @@ const ContactForm = () => {
   });
 
   const onSubmit = async (data: FormValues) => {
-    const clientId = getClientId();
-    
-    // Enhanced security checks
-    if (!contactFormRateLimit.check(clientId)) {
-      const remainingTime = Math.ceil(contactFormRateLimit.getRemainingTime(clientId) / 1000);
-      securityLog.rateLimitExceeded(clientId);
+    // Enhanced rate limiting with better fingerprinting
+    if (!contactFormRateLimit.check()) {
+      const remainingTime = Math.ceil(contactFormRateLimit.getRemainingTime() / 1000);
       toast({
         title: "Rate limit exceeded",
         description: `Please wait ${remainingTime} seconds before submitting another message.`,
@@ -109,13 +105,21 @@ const ContactForm = () => {
     setIsSubmitting(true);
 
     try {
-      // Validate configuration exists
-      if (!EMAILJS_CONFIG.publicKey || !EMAILJS_CONFIG.serviceId || !EMAILJS_CONFIG.templateId) {
-        throw new Error('EmailJS configuration is incomplete');
+      // Get and validate secure configuration
+      let emailJSConfig;
+      try {
+        emailJSConfig = getSecureEmailJSConfig();
+      } catch (error) {
+        toast({
+          title: "Configuration error",
+          description: "Email service is not properly configured. Please contact support.",
+          variant: "destructive",
+        });
+        return;
       }
 
       // Initialize EmailJS with secure configuration
-      emailjs.init(EMAILJS_CONFIG.publicKey);
+      emailjs.init(emailJSConfig.publicKey);
       
       // Sanitize and escape data for security (multiple layers)
       const sanitizedData = {
@@ -127,8 +131,8 @@ const ContactForm = () => {
       
       // Send the email using EmailJS with sanitized data
       const response = await emailjs.send(
-        EMAILJS_CONFIG.serviceId,
-        EMAILJS_CONFIG.templateId,
+        emailJSConfig.serviceId,
+        emailJSConfig.templateId,
         sanitizedData
       );
       
