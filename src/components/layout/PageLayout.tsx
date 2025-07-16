@@ -2,6 +2,7 @@
 import { ReactNode } from "react";
 import Navbar from "./Navbar";
 import Footer from "./Footer";
+import { WalkingBot } from "@/components/ai-bot/WalkingBot";
 
 interface PageLayoutProps {
   children: ReactNode;
@@ -15,6 +16,7 @@ const PageLayout = ({ children }: PageLayoutProps) => {
         {children}
       </main>
       <Footer />
+      <WalkingBot />
     </div>
   );
 };
