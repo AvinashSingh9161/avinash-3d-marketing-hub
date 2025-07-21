@@ -16,7 +16,7 @@ export const WalkingBot = () => {
 
   // Check if GLB model exists
   useEffect(() => {
-    fetch('/models/robot.glb')
+    fetch('/robot.glb')
       .then(response => {
         setHasGLBModel(response.ok);
       })
@@ -72,14 +72,22 @@ export const WalkingBot = () => {
         onMouseLeave={() => setIsWalking(true)}
       >
         <Canvas
-          camera={{ position: [0, 1, 3], fov: 50 }}
+          camera={{ position: [0, 0.5, 2], fov: 45 }}
           style={{ width: '100%', height: '100%' }}
+          shadows
+          gl={{ antialias: true, alpha: true }}
         >
-          <ambientLight intensity={0.6} />
-          <directionalLight position={[2, 2, 1]} intensity={1} castShadow />
-          <pointLight position={[-2, 2, 1]} intensity={0.5} />
+          <ambientLight intensity={0.4} />
+          <directionalLight 
+            position={[2, 3, 1]} 
+            intensity={0.8} 
+            castShadow 
+            shadow-mapSize={[1024, 1024]}
+            shadow-camera-far={50}
+          />
+          <pointLight position={[-1, 1, 1]} intensity={0.3} color="#fff3e0" />
           
-          <Suspense fallback={null}>
+          <Suspense fallback={<FallbackRobot3D direction={direction} isWalking={isWalking} />}>
             <RobotModel />
           </Suspense>
         </Canvas>
