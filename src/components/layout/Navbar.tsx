@@ -3,8 +3,6 @@ import { useState } from "react";
 import { Link } from "react-router-dom";
 import { Menu, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { ThemeToggle } from "@/components/theme-toggle";
-import logoAs from "@/assets/logo-as.png";
 
 const Navbar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -22,11 +20,11 @@ const Navbar = () => {
   ];
 
   return (
-    <nav className="fixed top-0 left-0 right-0 z-50 bg-background/90 backdrop-blur-sm py-4 px-6 shadow-sm border-b border-border">
+    <nav className="fixed top-0 left-0 right-0 z-50 bg-white bg-opacity-90 backdrop-blur-sm py-4 px-6 shadow-sm">
       <div className="container mx-auto flex items-center justify-between">
-        <Link to="/" className="flex items-center space-x-3">
-          <img src={logoAs} alt="AS Logo" className="w-8 h-8" />
-          <span className="hidden sm:inline-block font-poppins font-semibold text-foreground">Avinash Singh</span>
+        <Link to="/" className="flex items-center space-x-2">
+          <span className="font-poppins font-bold text-2xl gradient-text">AS</span>
+          <span className="hidden sm:inline-block font-poppins font-semibold text-brand-dark">Avinash Singh</span>
         </Link>
 
         {/* Desktop Menu */}
@@ -35,22 +33,20 @@ const Navbar = () => {
             <Link
               key={item.title}
               to={item.path}
-              className="font-medium text-muted-foreground hover:text-primary transition-colors"
+              className="font-medium text-gray-600 hover:text-brand-purple transition-colors"
             >
               {item.title}
             </Link>
           ))}
-          <ThemeToggle />
           <Button asChild>
-            <Link to="/contact">
+            <Link to="/contact" className="bg-gradient-to-r from-brand-purple to-brand-blue hover:opacity-90">
               Hire Me
             </Link>
           </Button>
         </div>
 
         {/* Mobile Menu Button */}
-        <div className="md:hidden flex items-center space-x-2">
-          <ThemeToggle />
+        <div className="md:hidden">
           <button onClick={toggleMenu} className="p-2 focus:outline-none">
             {isMenuOpen ? <X size={24} /> : <Menu size={24} />}
           </button>
@@ -59,20 +55,20 @@ const Navbar = () => {
 
       {/* Mobile Menu Panel */}
       {isMenuOpen && (
-        <div className="md:hidden absolute top-full left-0 right-0 bg-background border-t border-border shadow-lg py-4">
+        <div className="md:hidden absolute top-full left-0 right-0 bg-white border-t border-gray-100 shadow-lg py-4">
           <div className="container mx-auto flex flex-col space-y-4 px-6">
             {menuItems.map((item) => (
               <Link
                 key={item.title}
                 to={item.path}
-                className="font-medium text-muted-foreground hover:text-primary transition-colors py-2"
+                className="font-medium text-gray-600 hover:text-brand-purple transition-colors py-2"
                 onClick={toggleMenu}
               >
                 {item.title}
               </Link>
             ))}
             <Button asChild className="w-full">
-              <Link to="/contact">
+              <Link to="/contact" className="bg-gradient-to-r from-brand-purple to-brand-blue hover:opacity-90">
                 Hire Me
               </Link>
             </Button>
