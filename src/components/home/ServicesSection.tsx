@@ -45,40 +45,45 @@ const ServicesSection = () => {
   ];
 
   return (
-    <section className="py-20">
+    <section className="py-24 bg-gradient-subtle">
       <div className="container mx-auto px-6">
-        <div className="text-center mb-16">
-          <h2 className="text-3xl md:text-4xl font-bold font-poppins mb-4">My Services</h2>
-          <div className="w-24 h-1 bg-gradient-to-r from-brand-purple to-brand-blue mx-auto mb-6"></div>
-          <p className="text-gray-600 max-w-3xl mx-auto">
+        <div className="text-center mb-20 animate-fade-in">
+          <div className="badge-modern mb-6 inline-block">
+            💼 What I Offer
+          </div>
+          <h2 className="text-4xl md:text-5xl font-bold font-poppins mb-6 gradient-text">My Services</h2>
+          <div className="w-32 h-1 bg-gradient-to-r from-brand-primary via-brand-secondary to-brand-accent mx-auto mb-8 rounded-full"></div>
+          <p className="text-muted-foreground max-w-3xl mx-auto text-lg leading-relaxed">
             I offer comprehensive digital marketing solutions to help your business thrive in the digital landscape.
           </p>
         </div>
         
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10">
           {services.map((service, index) => (
-            <div key={index} className="card-3d p-8 flex flex-col h-full overflow-hidden">
+            <div key={index} className="card-glass p-8 flex flex-col h-full group animate-scale-in" style={{ animationDelay: `${index * 0.2}s` }}>
               {/* Service Image */}
-              <div className="mb-6 rounded-lg overflow-hidden">
+              <div className="mb-8 rounded-2xl overflow-hidden shadow-elegant">
                 <img 
                   src={service.image} 
                   alt={service.title}
-                  className="w-full h-48 object-cover hover:scale-105 transition-transform duration-300"
+                  className="w-full h-52 object-cover group-hover:scale-110 transition-transform duration-500"
                 />
               </div>
               
-              <div className="text-brand-purple mb-6">
+              <div className="text-brand-primary mb-6 group-hover:scale-110 transition-transform duration-300">
                 {service.icon}
               </div>
-              <h3 className="text-xl font-bold mb-4">{service.title}</h3>
-              <p className="text-gray-600 mb-6 flex-grow">{service.description}</p>
-              <ul className="mb-6 space-y-2">
+              <h3 className="text-2xl font-bold mb-6 font-poppins group-hover:text-brand-primary transition-colors duration-300">{service.title}</h3>
+              <p className="text-muted-foreground mb-8 flex-grow leading-relaxed">{service.description}</p>
+              <ul className="mb-8 space-y-3">
                 {service.features.map((feature, idx) => (
-                  <li key={idx} className="flex items-center">
-                    <svg className="w-5 h-5 text-brand-blue mr-2" fill="currentColor" viewBox="0 0 20 20">
-                      <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd"></path>
-                    </svg>
-                    <span className="text-sm">{feature}</span>
+                  <li key={idx} className="flex items-center group-hover:translate-x-2 transition-transform duration-300" style={{ transitionDelay: `${idx * 0.1}s` }}>
+                    <div className="w-6 h-6 rounded-full bg-brand-primary/10 flex items-center justify-center mr-3">
+                      <svg className="w-3 h-3 text-brand-primary" fill="currentColor" viewBox="0 0 20 20">
+                        <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd"></path>
+                      </svg>
+                    </div>
+                    <span className="text-sm font-medium">{feature}</span>
                   </li>
                 ))}
               </ul>
@@ -86,9 +91,9 @@ const ServicesSection = () => {
           ))}
         </div>
         
-        <div className="text-center mt-12">
-          <Button asChild>
-            <Link to="/services">View All Services</Link>
+        <div className="text-center mt-16 animate-fade-in">
+          <Button asChild size="lg" className="shadow-elegant glow-effect">
+            <Link to="/services" className="font-semibold">View All Services</Link>
           </Button>
         </div>
       </div>
