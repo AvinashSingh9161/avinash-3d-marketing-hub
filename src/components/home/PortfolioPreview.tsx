@@ -1,25 +1,28 @@
 
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
+import educationCampaignImage from "@/assets/education-social-campaign.jpg";
+import seoProjectImage from "@/assets/ias-seo-project.jpg";
+import ppcCampaignImage from "@/assets/elearning-ppc-campaign.jpg";
 
 const PortfolioPreview = () => {
   const projects = [
     {
       title: "Social Media Campaign",
       category: "Social Media",
-      image: "/placeholder.svg",
+      image: educationCampaignImage,
       description: "Comprehensive social media strategy for an education platform"
     },
     {
       title: "SEO Optimization",
       category: "SEO",
-      image: "/placeholder.svg",
+      image: seoProjectImage,
       description: "Website optimization resulting in 60% organic traffic increase"
     },
     {
       title: "PPC Ad Campaign",
       category: "Paid Advertising",
-      image: "/placeholder.svg",
+      image: ppcCampaignImage,
       description: "Google Ads campaign with 4.5x return on ad spend"
     }
   ];

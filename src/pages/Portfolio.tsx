@@ -1,6 +1,12 @@
 
 import { useState } from "react";
 import PageLayout from "@/components/layout/PageLayout";
+import educationCampaignImage from "@/assets/education-social-campaign.jpg";
+import seoProjectImage from "@/assets/ias-seo-project.jpg";
+import ppcCampaignImage from "@/assets/elearning-ppc-campaign.jpg";
+import blogStrategyImage from "@/assets/blog-content-strategy.jpg";
+import instagramGrowthImage from "@/assets/instagram-growth-campaign.jpg";
+import localSeoImage from "@/assets/local-seo-project.jpg";
 
 const Portfolio = () => {
   const [activeCategory, setActiveCategory] = useState("all");
@@ -20,7 +26,7 @@ const Portfolio = () => {
       id: 1,
       title: "Education Platform Social Campaign",
       category: "social-media",
-      image: "/placeholder.svg",
+      image: educationCampaignImage,
       description: "Comprehensive social media strategy for Prime Academy that increased engagement by 45% and follower growth by 30% over three months.",
       tags: ["Facebook", "Instagram", "Content Strategy"]
     },
@@ -28,7 +34,7 @@ const Portfolio = () => {
       id: 2,
       title: "IAS Coaching Website SEO",
       category: "seo",
-      image: "/placeholder.svg",
+      image: seoProjectImage,
       description: "SEO optimization for NextAchiever's IAS coaching website resulting in 60% increase in organic traffic and improved search rankings for key terms.",
       tags: ["Technical SEO", "Keyword Optimization", "Content Strategy"]
     },
@@ -36,7 +42,7 @@ const Portfolio = () => {
       id: 3,
       title: "E-learning PPC Campaign",
       category: "paid-ads",
-      image: "/placeholder.svg",
+      image: ppcCampaignImage,
       description: "Google Ads campaign for Cadets Prime that achieved 4.5x return on ad spend and decreased cost per conversion by 28%.",
       tags: ["Google Ads", "Targeting", "Conversion Optimization"]
     },
@@ -44,7 +50,7 @@ const Portfolio = () => {
       id: 4,
       title: "Blog Content Strategy",
       category: "content",
-      image: "/placeholder.svg",
+      image: blogStrategyImage,
       description: "Created and implemented a comprehensive blog content strategy that increased website traffic by 40% and improved lead generation.",
       tags: ["Content Planning", "SEO Writing", "Lead Generation"]
     },
@@ -52,7 +58,7 @@ const Portfolio = () => {
       id: 5,
       title: "Instagram Growth Campaign",
       category: "social-media",
-      image: "/placeholder.svg",
+      image: instagramGrowthImage,
       description: "Managed an Instagram growth campaign that increased followers by 120% and engagement rate by 65% over four months.",
       tags: ["Instagram", "Visual Content", "Community Building"]
     },
@@ -60,7 +66,7 @@ const Portfolio = () => {
       id: 6,
       title: "Local Business SEO Project",
       category: "seo",
-      image: "/placeholder.svg",
+      image: localSeoImage,
       description: "Local SEO optimization for a retail business that improved Google Maps visibility and increased foot traffic by 35%.",
       tags: ["Local SEO", "Google Business Profile", "Citation Building"]
     }
