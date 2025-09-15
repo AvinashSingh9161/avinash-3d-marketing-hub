@@ -2,7 +2,6 @@
 import { ReactNode } from "react";
 import Navbar from "./Navbar";
 import Footer from "./Footer";
-import { ChatButton } from "@/components/ai-bot/ChatButton";
 
 interface PageLayoutProps {
   children: ReactNode;
@@ -16,7 +15,6 @@ const PageLayout = ({ children }: PageLayoutProps) => {
         {children}
       </main>
       <Footer />
-      <ChatButton />
     </div>
   );
 };

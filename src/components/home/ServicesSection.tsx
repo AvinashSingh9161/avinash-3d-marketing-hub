@@ -1,15 +1,11 @@
 
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
-import socialMediaImage from "@/assets/social-media-campaign.jpg";
-import seoImage from "@/assets/seo-optimization.jpg";
-import ppcImage from "@/assets/ppc-advertising.jpg";
 
 const ServicesSection = () => {
   const services = [
     {
       title: "Social Media Management",
-      image: socialMediaImage,
       icon: (
         <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" fill="currentColor" viewBox="0 0 16 16">
           <path d="M6 12.5a.5.5 0 0 1 .5-.5h3a.5.5 0 0 1 0 1h-3a.5.5 0 0 1-.5-.5ZM3 8.062C3 6.76 4.235 5.765 5.53 5.886a26.58 26.58 0 0 0 4.94 0C11.765 5.765 13 6.76 13 8.062v1.157a.933.933 0 0 1-.765.935c-.845.147-2.34.346-4.235.346-1.895 0-3.39-.2-4.235-.346A.933.933 0 0 1 3 9.219V8.062Zm4.542-.827a.25.25 0 0 0-.217.068l-.92.9a24.767 24.767 0 0 1-1.871-.183.25.25 0 0 0-.068.495c.55.076 1.232.149 2.02.193a.25.25 0 0 0 .189-.071l.754-.736.847 1.71a.25.25 0 0 0 .404.062l.932-.97a25.286 25.286 0 0 0 1.922-.188.25.25 0 0 0-.068-.495c-.538.074-1.207.145-1.98.189a.25.25 0 0 0-.166.076l-.754.785-.842-1.7a.25.25 0 0 0-.182-.135Z"/>
@@ -21,7 +17,6 @@ const ServicesSection = () => {
     },
     {
       title: "Paid Advertising",
-      image: ppcImage,
       icon: (
         <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" fill="currentColor" viewBox="0 0 16 16">
           <path d="M11.251.068a.5.5 0 0 1 .227.58L9.677 6.5H13a.5.5 0 0 1 .364.843l-8 8.5a.5.5 0 0 1-.842-.49L6.323 9.5H3a.5.5 0 0 1-.364-.843l8-8.5a.5.5 0 0 1 .615-.09z"/>
@@ -32,7 +27,6 @@ const ServicesSection = () => {
     },
     {
       title: "SEO Services",
-      image: seoImage,
       icon: (
         <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" fill="currentColor" viewBox="0 0 16 16">
           <path d="M14.5 3a.5.5 0 0 1 .5.5v9a.5.5 0 0 1-.5.5h-13a.5.5 0 0 1-.5-.5v-9a.5.5 0 0 1 .5-.5h13zm-13-1A1.5 1.5 0 0 0 0 3.5v9A1.5 1.5 0 0 0 1.5 14h13a1.5 1.5 0 0 0 1.5-1.5v-9A1.5 1.5 0 0 0 14.5 2h-13z"/>
@@ -45,45 +39,31 @@ const ServicesSection = () => {
   ];
 
   return (
-    <section className="py-24 bg-gradient-subtle">
+    <section className="py-20">
       <div className="container mx-auto px-6">
-        <div className="text-center mb-24 animate-fade-in">
-          <div className="badge-modern mb-8 inline-block">
-            <span>🎨 Creative Solutions</span>
-          </div>
-          <h2 className="text-5xl md:text-6xl lg:text-7xl font-bold font-playfair mb-8 gradient-text">My Expertise</h2>
-          <div className="w-40 h-2 bg-designer-gradient mx-auto mb-10 rounded-full shadow-neon"></div>
-          <p className="text-muted-foreground max-w-4xl mx-auto text-xl md:text-2xl leading-relaxed font-space font-light">
-            Transforming brands through innovative digital strategies, compelling visual narratives, and data-driven creative campaigns that deliver exceptional results.
+        <div className="text-center mb-16">
+          <h2 className="text-3xl md:text-4xl font-bold font-poppins mb-4">My Services</h2>
+          <div className="w-24 h-1 bg-gradient-to-r from-brand-purple to-brand-blue mx-auto mb-6"></div>
+          <p className="text-gray-600 max-w-3xl mx-auto">
+            I offer comprehensive digital marketing solutions to help your business thrive in the digital landscape.
           </p>
         </div>
         
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-12">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
           {services.map((service, index) => (
-            <div key={index} className="card-glass p-10 flex flex-col h-full group animate-scale-in design-highlight" style={{ animationDelay: `${index * 0.2}s` }}>
-              {/* Service Image */}
-              <div className="mb-10 rounded-3xl overflow-hidden shadow-designer">
-                <img 
-                  src={service.image} 
-                  alt={service.title}
-                  className="w-full h-60 object-cover group-hover:scale-110 transition-transform duration-700"
-                />
-              </div>
-              
-              <div className="text-brand-primary mb-8 group-hover:scale-110 group-hover:text-brand-accent transition-all duration-500">
+            <div key={index} className="card-3d p-8 flex flex-col h-full">
+              <div className="text-brand-purple mb-6">
                 {service.icon}
               </div>
-              <h3 className="text-3xl font-bold mb-8 font-playfair group-hover:text-brand-primary transition-colors duration-500">{service.title}</h3>
-              <p className="text-muted-foreground mb-10 flex-grow leading-relaxed text-lg font-space">{service.description}</p>
-              <ul className="mb-10 space-y-4">
+              <h3 className="text-xl font-bold mb-4">{service.title}</h3>
+              <p className="text-gray-600 mb-6 flex-grow">{service.description}</p>
+              <ul className="mb-6 space-y-2">
                 {service.features.map((feature, idx) => (
-                  <li key={idx} className="flex items-center group-hover:translate-x-3 transition-transform duration-500" style={{ transitionDelay: `${idx * 0.1}s` }}>
-                    <div className="w-8 h-8 rounded-full bg-brand-primary/20 flex items-center justify-center mr-4 group-hover:bg-brand-primary/30 transition-colors duration-300">
-                      <svg className="w-4 h-4 text-brand-primary" fill="currentColor" viewBox="0 0 20 20">
-                        <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd"></path>
-                      </svg>
-                    </div>
-                    <span className="text-base font-medium font-space">{feature}</span>
+                  <li key={idx} className="flex items-center">
+                    <svg className="w-5 h-5 text-brand-blue mr-2" fill="currentColor" viewBox="0 0 20 20">
+                      <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd"></path>
+                    </svg>
+                    <span className="text-sm">{feature}</span>
                   </li>
                 ))}
               </ul>
@@ -91,9 +71,9 @@ const ServicesSection = () => {
           ))}
         </div>
         
-        <div className="text-center mt-20 animate-fade-in">
-          <Button asChild size="lg" className="shadow-designer glow-effect px-12 py-6 text-xl rounded-2xl font-space font-bold">
-            <Link to="/services">Explore All Services</Link>
+        <div className="text-center mt-12">
+          <Button asChild>
+            <Link to="/services">View All Services</Link>
           </Button>
         </div>
       </div>
