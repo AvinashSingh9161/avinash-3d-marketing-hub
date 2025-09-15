@@ -1,5 +1,5 @@
 
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Poppins:wght@400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@200;300;400;500;600;700;800;900&family=Playfair+Display:wght@400;500;600;700;800;900&family=Space+Grotesk:wght@300;400;500;600;700&display=swap');
 
 @tailwind base;
 @tailwind components;
@@ -37,13 +37,18 @@
 
     --radius: 0.75rem;
 
-    /* Professional Color Palette */
-    --brand-primary: 262 83% 58%;
-    --brand-secondary: 200 98% 39%;
-    --brand-accent: 25 95% 53%;
-    --brand-success: 142 76% 36%;
-    --brand-warning: 45 93% 47%;
-    --brand-error: 0 72% 51%;
+    /* Professional Designer Color Palette */
+    --brand-primary: 280 100% 70%;
+    --brand-secondary: 240 100% 85%;
+    --brand-accent: 320 85% 65%;
+    --brand-success: 150 80% 50%;
+    --brand-warning: 45 100% 60%;
+    --brand-error: 0 85% 60%;
+    
+    /* Designer Gradients */
+    --gradient-primary: linear-gradient(135deg, hsl(280 100% 70%) 0%, hsl(240 100% 85%) 50%, hsl(320 85% 65%) 100%);
+    --gradient-secondary: linear-gradient(45deg, hsl(240 100% 85%) 0%, hsl(280 100% 70%) 100%);
+    --gradient-accent: linear-gradient(135deg, hsl(320 85% 65%) 0%, hsl(280 100% 70%) 100%);
     
     /* Surface Colors */
     --surface-50: 250 250 255;
@@ -136,24 +141,70 @@
   .font-poppins {
     font-family: 'Poppins', sans-serif;
   }
+
+  .font-playfair {
+    font-family: 'Playfair Display', serif;
+  }
+
+  .font-space {
+    font-family: 'Space Grotesk', sans-serif;
+  }
   
   /* Modern Gradient Text */
   .gradient-text {
     @apply bg-clip-text text-transparent;
-    background: linear-gradient(135deg, hsl(var(--brand-primary)), hsl(var(--brand-secondary)), hsl(var(--brand-accent)));
+    background: var(--gradient-primary);
+    background-size: 200% 200%;
+    animation: gradient-flow 4s ease-in-out infinite;
+  }
+
+  .gradient-text-secondary {
+    @apply bg-clip-text text-transparent;
+    background: var(--gradient-secondary);
+  }
+
+  @keyframes gradient-flow {
+    0%, 100% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
   }
   
   /* Glass Card Effect */
   .card-glass {
-    @apply backdrop-blur-xl rounded-2xl border transition-all duration-500;
-    background: hsl(var(--card));
-    border-color: hsl(var(--border));
-    box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
+    @apply backdrop-blur-2xl rounded-3xl border transition-all duration-700 relative overflow-hidden;
+    background: linear-gradient(135deg, 
+      hsl(var(--card)) 0%, 
+      hsl(var(--surface-100)) 50%, 
+      hsl(var(--card)) 100%
+    );
+    border: 1px solid hsl(var(--brand-primary) / 0.2);
+    box-shadow: 
+      0 8px 32px rgba(280, 100%, 70%, 0.15),
+      0 20px 60px rgba(0, 0, 0, 0.1),
+      inset 0 1px 0 rgba(255, 255, 255, 0.1);
+  }
+  
+  .card-glass::before {
+    content: '';
+    @apply absolute inset-0 rounded-3xl;
+    background: linear-gradient(135deg, 
+      transparent 0%, 
+      hsl(var(--brand-primary) / 0.05) 50%, 
+      transparent 100%
+    );
+    opacity: 0;
+    transition: opacity 0.7s ease;
   }
   
   .card-glass:hover {
-    @apply transform -translate-y-2 scale-[1.02];
-    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+    @apply transform -translate-y-4 scale-[1.03];
+    box-shadow: 
+      0 25px 80px rgba(280, 100%, 70%, 0.25),
+      0 40px 100px rgba(0, 0, 0, 0.15),
+      inset 0 1px 0 rgba(255, 255, 255, 0.2);
+  }
+
+  .card-glass:hover::before {
+    opacity: 1;
   }
   
   /* Enhanced 3D Cards */
@@ -190,23 +241,85 @@
   
   /* Professional Badges */
   .badge-modern {
-    @apply inline-flex items-center px-4 py-2 rounded-full text-sm font-medium transition-all duration-300;
-    background: hsl(var(--brand-primary) / 0.1);
+    @apply inline-flex items-center px-6 py-3 rounded-full text-sm font-semibold transition-all duration-500 relative overflow-hidden;
+    background: linear-gradient(135deg, 
+      hsl(var(--brand-primary) / 0.1), 
+      hsl(var(--brand-secondary) / 0.1)
+    );
     color: hsl(var(--brand-primary));
-    border: 1px solid hsl(var(--brand-primary) / 0.2);
+    border: 1px solid hsl(var(--brand-primary) / 0.3);
+    box-shadow: 0 4px 20px hsl(var(--brand-primary) / 0.15);
+  }
+
+  .badge-modern::before {
+    content: '';
+    @apply absolute inset-0 rounded-full;
+    background: var(--gradient-primary);
+    opacity: 0;
+    transition: opacity 0.5s ease;
+  }
+
+  .badge-modern::after {
+    content: '';
+    @apply absolute inset-0 rounded-full;
+    background: linear-gradient(135deg, 
+      transparent 0%, 
+      rgba(255, 255, 255, 0.2) 50%, 
+      transparent 100%
+    );
+    transform: translateX(-100%);
+    transition: transform 0.8s ease;
   }
   
   .badge-modern:hover {
-    @apply scale-105;
-    background: hsl(var(--brand-primary) / 0.15);
+    @apply scale-110 text-white;
+    box-shadow: 0 8px 40px hsl(var(--brand-primary) / 0.4);
+  }
+
+  .badge-modern:hover::before {
+    opacity: 1;
+  }
+
+  .badge-modern:hover::after {
+    transform: translateX(100%);
+  }
+
+  .badge-modern span {
+    @apply relative z-10;
   }
   
   /* Glowing Elements */
   .glow-effect {
-    box-shadow: 0 0 20px hsl(var(--brand-primary) / 0.3);
+    box-shadow: 
+      0 0 30px hsl(var(--brand-primary) / 0.4),
+      0 10px 40px rgba(0, 0, 0, 0.1);
+    transition: all 0.5s ease;
   }
   
   .glow-effect:hover {
-    box-shadow: 0 0 40px hsl(var(--brand-primary) / 0.5);
+    box-shadow: 
+      0 0 60px hsl(var(--brand-primary) / 0.6),
+      0 20px 80px rgba(0, 0, 0, 0.15);
+    transform: translateY(-2px);
+  }
+
+  /* Designer-specific styles */
+  .design-highlight {
+    @apply relative;
+  }
+
+  .design-highlight::before {
+    content: '';
+    @apply absolute -inset-1 rounded-2xl;
+    background: var(--gradient-primary);
+    opacity: 0.1;
+    filter: blur(10px);
+    z-index: -1;
+  }
+
+  .text-shadow-glow {
+    text-shadow: 
+      0 0 20px hsl(var(--brand-primary) / 0.5),
+      0 0 40px hsl(var(--brand-primary) / 0.3);
   }
 }

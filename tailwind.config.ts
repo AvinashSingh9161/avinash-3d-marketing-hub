@@ -19,6 +19,10 @@ export default {
 			}
 		},
 		extend: {
+			fontFamily: {
+				'playfair': ['Playfair Display', 'serif'],
+				'space': ['Space Grotesk', 'sans-serif'],
+			},
 			colors: {
 				border: 'hsl(var(--border))',
 				input: 'hsl(var(--input))',
@@ -88,12 +92,15 @@ export default {
 				sm: 'calc(var(--radius) - 4px)'
 			},
 			boxShadow: {
-				'elegant': '0 4px 20px -4px rgba(0, 0, 0, 0.15)',
-				'elegant-lg': '0 10px 40px -12px rgba(0, 0, 0, 0.25)',
-				'elegant-xl': '0 20px 60px -12px rgba(0, 0, 0, 0.35)',
+				'elegant': '0 8px 40px -8px rgba(0, 0, 0, 0.12)',
+				'elegant-lg': '0 20px 80px -12px rgba(0, 0, 0, 0.25)',
+				'elegant-xl': '0 40px 120px -12px rgba(0, 0, 0, 0.35)',
 				'glass': '0 8px 32px 0 rgba(31, 38, 135, 0.37)',
-				'glow': '0 0 20px rgba(139, 92, 246, 0.3)',
-				'glow-lg': '0 0 40px rgba(139, 92, 246, 0.5)',
+				'designer': '0 10px 50px rgba(128, 0, 255, 0.15), 0 20px 100px rgba(0, 0, 0, 0.1)',
+				'designer-lg': '0 25px 100px rgba(128, 0, 255, 0.25), 0 50px 200px rgba(0, 0, 0, 0.15)',
+				'glow': '0 0 30px rgba(128, 0, 255, 0.4)',
+				'glow-lg': '0 0 60px rgba(128, 0, 255, 0.6)',
+				'neon': '0 0 5px currentColor, 0 0 20px currentColor, 0 0 35px currentColor',
 			},
 			keyframes: {
 				'accordion-down': {
@@ -142,9 +149,11 @@ export default {
 			},
 			backgroundImage: {
 				'gradient-radial': 'radial-gradient(var(--tw-gradient-stops))',
-				'hero-gradient': 'linear-gradient(135deg, hsl(var(--brand-primary)) 0%, hsl(var(--brand-secondary)) 50%, hsl(var(--brand-accent)) 100%)',
+				'hero-gradient': 'linear-gradient(135deg, hsl(280 100% 70%) 0%, hsl(240 100% 85%) 50%, hsl(320 85% 65%) 100%)',
 				'card-gradient': 'linear-gradient(145deg, hsl(var(--card)), hsl(var(--surface-100)))',
-				'glass-gradient': 'linear-gradient(135deg, rgba(255,255,255,0.1) 0%, rgba(255,255,255,0.05) 100%)'
+				'glass-gradient': 'linear-gradient(135deg, rgba(255,255,255,0.1) 0%, rgba(255,255,255,0.05) 100%)',
+				'designer-gradient': 'linear-gradient(135deg, #8B5CF6 0%, #A855F7 25%, #C084FC 50%, #E879F9 75%, #F0ABFC 100%)',
+				'mesh-gradient': 'radial-gradient(at 40% 20%, hsla(280,100%,70%,1) 0px, transparent 50%), radial-gradient(at 80% 0%, hsla(240,100%,85%,1) 0px, transparent 50%), radial-gradient(at 0% 50%, hsla(320,85%,65%,1) 0px, transparent 50%)'
 			}
 		}
 	},

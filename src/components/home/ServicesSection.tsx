@@ -47,43 +47,43 @@ const ServicesSection = () => {
   return (
     <section className="py-24 bg-gradient-subtle">
       <div className="container mx-auto px-6">
-        <div className="text-center mb-20 animate-fade-in">
-          <div className="badge-modern mb-6 inline-block">
-            💼 What I Offer
+        <div className="text-center mb-24 animate-fade-in">
+          <div className="badge-modern mb-8 inline-block">
+            <span>🎨 Creative Solutions</span>
           </div>
-          <h2 className="text-4xl md:text-5xl font-bold font-poppins mb-6 gradient-text">My Services</h2>
-          <div className="w-32 h-1 bg-gradient-to-r from-brand-primary via-brand-secondary to-brand-accent mx-auto mb-8 rounded-full"></div>
-          <p className="text-muted-foreground max-w-3xl mx-auto text-lg leading-relaxed">
-            I offer comprehensive digital marketing solutions to help your business thrive in the digital landscape.
+          <h2 className="text-5xl md:text-6xl lg:text-7xl font-bold font-playfair mb-8 gradient-text">My Expertise</h2>
+          <div className="w-40 h-2 bg-designer-gradient mx-auto mb-10 rounded-full shadow-neon"></div>
+          <p className="text-muted-foreground max-w-4xl mx-auto text-xl md:text-2xl leading-relaxed font-space font-light">
+            Transforming brands through innovative digital strategies, compelling visual narratives, and data-driven creative campaigns that deliver exceptional results.
           </p>
         </div>
         
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-12">
           {services.map((service, index) => (
-            <div key={index} className="card-glass p-8 flex flex-col h-full group animate-scale-in" style={{ animationDelay: `${index * 0.2}s` }}>
+            <div key={index} className="card-glass p-10 flex flex-col h-full group animate-scale-in design-highlight" style={{ animationDelay: `${index * 0.2}s` }}>
               {/* Service Image */}
-              <div className="mb-8 rounded-2xl overflow-hidden shadow-elegant">
+              <div className="mb-10 rounded-3xl overflow-hidden shadow-designer">
                 <img 
                   src={service.image} 
                   alt={service.title}
-                  className="w-full h-52 object-cover group-hover:scale-110 transition-transform duration-500"
+                  className="w-full h-60 object-cover group-hover:scale-110 transition-transform duration-700"
                 />
               </div>
               
-              <div className="text-brand-primary mb-6 group-hover:scale-110 transition-transform duration-300">
+              <div className="text-brand-primary mb-8 group-hover:scale-110 group-hover:text-brand-accent transition-all duration-500">
                 {service.icon}
               </div>
-              <h3 className="text-2xl font-bold mb-6 font-poppins group-hover:text-brand-primary transition-colors duration-300">{service.title}</h3>
-              <p className="text-muted-foreground mb-8 flex-grow leading-relaxed">{service.description}</p>
-              <ul className="mb-8 space-y-3">
+              <h3 className="text-3xl font-bold mb-8 font-playfair group-hover:text-brand-primary transition-colors duration-500">{service.title}</h3>
+              <p className="text-muted-foreground mb-10 flex-grow leading-relaxed text-lg font-space">{service.description}</p>
+              <ul className="mb-10 space-y-4">
                 {service.features.map((feature, idx) => (
-                  <li key={idx} className="flex items-center group-hover:translate-x-2 transition-transform duration-300" style={{ transitionDelay: `${idx * 0.1}s` }}>
-                    <div className="w-6 h-6 rounded-full bg-brand-primary/10 flex items-center justify-center mr-3">
-                      <svg className="w-3 h-3 text-brand-primary" fill="currentColor" viewBox="0 0 20 20">
+                  <li key={idx} className="flex items-center group-hover:translate-x-3 transition-transform duration-500" style={{ transitionDelay: `${idx * 0.1}s` }}>
+                    <div className="w-8 h-8 rounded-full bg-brand-primary/20 flex items-center justify-center mr-4 group-hover:bg-brand-primary/30 transition-colors duration-300">
+                      <svg className="w-4 h-4 text-brand-primary" fill="currentColor" viewBox="0 0 20 20">
                         <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd"></path>
                       </svg>
                     </div>
-                    <span className="text-sm font-medium">{feature}</span>
+                    <span className="text-base font-medium font-space">{feature}</span>
                   </li>
                 ))}
               </ul>
@@ -91,9 +91,9 @@ const ServicesSection = () => {
           ))}
         </div>
         
-        <div className="text-center mt-16 animate-fade-in">
-          <Button asChild size="lg" className="shadow-elegant glow-effect">
-            <Link to="/services" className="font-semibold">View All Services</Link>
+        <div className="text-center mt-20 animate-fade-in">
+          <Button asChild size="lg" className="shadow-designer glow-effect px-12 py-6 text-xl rounded-2xl font-space font-bold">
+            <Link to="/services">Explore All Services</Link>
           </Button>
         </div>
       </div>
