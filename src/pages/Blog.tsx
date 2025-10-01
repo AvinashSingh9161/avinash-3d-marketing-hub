@@ -16,7 +16,7 @@ interface BlogPost {
   excerpt: string | null;
   featured_image: string | null;
   published_at: string | null;
-  profiles: { full_name: string | null; email: string } | null;
+  profiles: { full_name: string | null } | null;
   categories: { name: string; slug: string } | null;
 }
 
@@ -54,7 +54,7 @@ const Blog = () => {
           excerpt,
           featured_image,
           published_at,
-          profiles (full_name, email),
+          profiles (full_name),
           categories (name, slug)
         `)
         .eq("published", true)
@@ -139,7 +139,7 @@ const Blog = () => {
                       <div className="flex items-center gap-4 text-sm text-muted-foreground">
                         <div className="flex items-center gap-1">
                           <User className="h-3 w-3" />
-                          <span>{post.profiles?.full_name || post.profiles?.email}</span>
+                          <span>{post.profiles?.full_name || "Anonymous"}</span>
                         </div>
                         {post.published_at && (
                           <div className="flex items-center gap-1">

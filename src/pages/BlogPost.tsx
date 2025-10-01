@@ -15,7 +15,7 @@ interface BlogPostData {
   excerpt: string | null;
   featured_image: string | null;
   published_at: string | null;
-  profiles: { full_name: string | null; email: string; bio: string | null; avatar_url: string | null } | null;
+  profiles: { full_name: string | null; bio: string | null; avatar_url: string | null } | null;
   categories: { name: string; slug: string } | null;
 }
 
@@ -41,7 +41,7 @@ const BlogPost = () => {
           excerpt,
           featured_image,
           published_at,
-          profiles (full_name, email, bio, avatar_url),
+          profiles (full_name, bio, avatar_url),
           categories (name, slug)
         `)
         .eq("slug", slug)
@@ -134,7 +134,7 @@ const BlogPost = () => {
                   ) : (
                     <User className="h-5 w-5" />
                   )}
-                  <span>{post.profiles?.full_name || post.profiles?.email}</span>
+                  <span>{post.profiles?.full_name || "Anonymous"}</span>
                 </div>
                 {post.published_at && (
                   <div className="flex items-center gap-2">
@@ -170,7 +170,7 @@ const BlogPost = () => {
                   )}
                   <div>
                     <h3 className="font-semibold text-lg mb-1">
-                      {post.profiles.full_name || post.profiles.email}
+                      {post.profiles.full_name || "Anonymous"}
                     </h3>
                     {post.profiles.bio && (
                       <p className="text-muted-foreground">{post.profiles.bio}</p>
