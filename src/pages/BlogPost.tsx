@@ -15,6 +15,7 @@ interface BlogPostData {
   excerpt: string | null;
   featured_image: string | null;
   published_at: string | null;
+  author_id: string;
   profiles: { full_name: string | null; bio: string | null; avatar_url: string | null } | null;
   categories: { name: string; slug: string } | null;
 }
@@ -32,7 +33,8 @@ const BlogPost = () => {
 
   const fetchPost = async () => {
     try {
-      const { data, error } = await supabase
+      // First, fetch the blog post with author ID
+      const { data: postData, error: postError } = await supabase
         .from("blog_posts")
         .select(`
           id,
@@ -41,15 +43,26 @@ const BlogPost = () => {
           excerpt,
           featured_image,
           published_at,
-          profiles (full_name, bio, avatar_url),
+          author_id,
           categories (name, slug)
         `)
         .eq("slug", slug)
         .eq("published", true)
         .single();
 
-      if (error) throw error;
-      setPost(data);
+      if (postError) throw postError;
+
+      // Fetch the author's public profile using the secure function
+      const { data: profileData } = await supabase
+        .rpc('get_public_profile', { profile_id: postData.author_id });
+
+      // Combine post with author profile
+      const postWithProfile = {
+        ...postData,
+        profiles: profileData && profileData.length > 0 ? profileData[0] : null
+      };
+
+      setPost(postWithProfile);
     } catch (error) {
       console.error("Error fetching post:", error);
     } finally {

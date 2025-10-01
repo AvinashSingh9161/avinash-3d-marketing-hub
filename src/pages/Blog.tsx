@@ -16,6 +16,7 @@ interface BlogPost {
   excerpt: string | null;
   featured_image: string | null;
   published_at: string | null;
+  author_id: string;
   profiles: { full_name: string | null } | null;
   categories: { name: string; slug: string } | null;
 }
@@ -45,7 +46,8 @@ const Blog = () => {
 
   const fetchPosts = async () => {
     try {
-      const { data, error } = await supabase
+      // First, fetch blog posts with author IDs
+      const { data: postsData, error: postsError } = await supabase
         .from("blog_posts")
         .select(`
           id,
@@ -54,15 +56,34 @@ const Blog = () => {
           excerpt,
           featured_image,
           published_at,
-          profiles (full_name),
+          author_id,
           categories (name, slug)
         `)
         .eq("published", true)
         .order("published_at", { ascending: false });
 
-      if (error) throw error;
-      setPosts(data || []);
-      setFilteredPosts(data || []);
+      if (postsError) throw postsError;
+
+      // Fetch public profiles for all unique author IDs using the secure function
+      const authorIds = [...new Set(postsData?.map(post => post.author_id) || [])];
+      const profilesMap = new Map();
+
+      for (const authorId of authorIds) {
+        const { data: profileData } = await supabase
+          .rpc('get_public_profile', { profile_id: authorId });
+        if (profileData && profileData.length > 0) {
+          profilesMap.set(authorId, profileData[0]);
+        }
+      }
+
+      // Combine posts with their author profiles
+      const postsWithProfiles = postsData?.map(post => ({
+        ...post,
+        profiles: profilesMap.get(post.author_id) || null
+      })) || [];
+
+      setPosts(postsWithProfiles);
+      setFilteredPosts(postsWithProfiles);
     } catch (error) {
       console.error("Error fetching posts:", error);
     } finally {
