@@ -1,9 +1,65 @@
-
+import { useEffect, useRef } from "react";
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Avatar, AvatarImage } from "@/components/ui/avatar";
+import gsap from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
+
+gsap.registerPlugin(ScrollTrigger);
 
 const AboutPreview = () => {
+  const avatarRef = useRef<HTMLDivElement>(null);
+  const skillBarsRef = useRef<(HTMLDivElement | null)[]>([]);
+
+  useEffect(() => {
+    // Animate avatar
+    gsap.fromTo(
+      avatarRef.current,
+      { 
+        opacity: 0, 
+        scale: 0.5,
+        rotation: -180
+      },
+      {
+        opacity: 1,
+        scale: 1,
+        rotation: 0,
+        duration: 1.2,
+        ease: "elastic.out(1, 0.5)",
+        scrollTrigger: {
+          trigger: avatarRef.current,
+          start: "top 85%",
+          toggleActions: "play none none reverse"
+        }
+      }
+    );
+
+    // Animate skill bars
+    skillBarsRef.current.forEach((bar, index) => {
+      if (bar) {
+        gsap.fromTo(
+          bar,
+          { width: "0%" },
+          {
+            width: bar.getAttribute("data-width") + "%",
+            duration: 1.5,
+            delay: index * 0.15,
+            ease: "power2.out",
+            scrollTrigger: {
+              trigger: bar,
+              start: "top 85%",
+              toggleActions: "play none none reverse"
+            }
+          }
+        );
+      }
+    });
+
+    return () => {
+      ScrollTrigger.getAll().forEach(trigger => trigger.kill());
+    };
+  }, []);
+
   // Skills data
   const skills = [
     { name: "SEO", percentage: 90 },
@@ -24,13 +80,15 @@ const AboutPreview = () => {
         <div className="flex flex-col lg:flex-row gap-12">
           <div className="w-full lg:w-1/2">
             <div className="flex justify-center lg:justify-start mb-6">
-              <Avatar className="w-40 h-40 border-4 border-white shadow-3d">
-                <AvatarImage 
-                  src="https://i.postimg.cc/FzVmC0rk/Whats-App-Image-2025-05-07-at-17-14-34-420a56a6.jpg" 
-                  alt="Avinash Singh - Digital Marketing Specialist" 
-                  className="w-full h-full object-cover" 
-                />
-              </Avatar>
+              <div ref={avatarRef}>
+                <Avatar className="w-40 h-40 border-4 border-white shadow-3d">
+                  <AvatarImage 
+                    src="https://i.postimg.cc/FzVmC0rk/Whats-App-Image-2025-05-07-at-17-14-34-420a56a6.jpg" 
+                    alt="Avinash Singh - Digital Marketing Specialist" 
+                    className="w-full h-full object-cover" 
+                  />
+                </Avatar>
+              </div>
             </div>
             <h3 className="text-2xl font-semibold mb-6">My Background</h3>
             <p className="text-gray-600 mb-4">
@@ -65,8 +123,10 @@ const AboutPreview = () => {
                   </div>
                   <div className="h-3 bg-gray-200 rounded-full overflow-hidden">
                     <div 
+                      ref={(el) => (skillBarsRef.current[index] = el)}
+                      data-width={skill.percentage}
                       className="h-full bg-gradient-to-r from-brand-purple to-brand-blue rounded-full"
-                      style={{ width: `${skill.percentage}%` }}
+                      style={{ width: "0%" }}
                       aria-label={`${skill.name} skill level: ${skill.percentage}%`}
                     ></div>
                   </div>

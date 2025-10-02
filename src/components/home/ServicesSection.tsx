@@ -1,11 +1,70 @@
-
+import { useEffect, useRef } from "react";
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import socialMediaImage from "@/assets/social-media-campaign.jpg";
 import seoImage from "@/assets/seo-optimization.jpg";
 import ppcImage from "@/assets/ppc-advertising.jpg";
+import gsap from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
+
+gsap.registerPlugin(ScrollTrigger);
 
 const ServicesSection = () => {
+  const sectionRef = useRef<HTMLElement>(null);
+  const titleRef = useRef<HTMLHeadingElement>(null);
+  const cardsRef = useRef<(HTMLDivElement | null)[]>([]);
+  useEffect(() => {
+    const ctx = gsap.context(() => {
+      // Animate title
+      gsap.fromTo(
+        titleRef.current,
+        { opacity: 0, y: 50 },
+        {
+          opacity: 1,
+          y: 0,
+          duration: 1,
+          ease: "power3.out",
+          scrollTrigger: {
+            trigger: titleRef.current,
+            start: "top 85%",
+            toggleActions: "play none none reverse"
+          }
+        }
+      );
+
+      // Animate service cards
+      cardsRef.current.forEach((card, index) => {
+        if (card) {
+          gsap.fromTo(
+            card,
+            { 
+              opacity: 0, 
+              y: 80,
+              scale: 0.9,
+              rotateY: -20
+            },
+            {
+              opacity: 1,
+              y: 0,
+              scale: 1,
+              rotateY: 0,
+              duration: 1,
+              delay: index * 0.2,
+              ease: "back.out(1.7)",
+              scrollTrigger: {
+                trigger: card,
+                start: "top 85%",
+                toggleActions: "play none none reverse"
+              }
+            }
+          );
+        }
+      });
+    }, sectionRef);
+
+    return () => ctx.revert();
+  }, []);
+
   const services = [
     {
       title: "Social Media Management",
@@ -45,10 +104,10 @@ const ServicesSection = () => {
   ];
 
   return (
-    <section className="py-20">
+    <section ref={sectionRef} className="py-20">
       <div className="container mx-auto px-6">
         <div className="text-center mb-16">
-          <h2 className="text-3xl md:text-4xl font-bold font-poppins mb-4">My Services</h2>
+          <h2 ref={titleRef} className="text-3xl md:text-4xl font-bold font-poppins mb-4">My Services</h2>
           <div className="w-24 h-1 bg-gradient-to-r from-brand-purple to-brand-blue mx-auto mb-6"></div>
           <p className="text-gray-600 max-w-3xl mx-auto">
             I offer comprehensive digital marketing solutions to help your business thrive in the digital landscape.
@@ -57,7 +116,11 @@ const ServicesSection = () => {
         
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
           {services.map((service, index) => (
-            <div key={index} className="card-3d p-8 flex flex-col h-full overflow-hidden">
+            <div 
+              key={index}
+              ref={(el) => (cardsRef.current[index] = el)}
+              className="card-3d p-8 flex flex-col h-full overflow-hidden"
+            >
               {/* Service Image */}
               <div className="mb-6 rounded-lg overflow-hidden">
                 <img 

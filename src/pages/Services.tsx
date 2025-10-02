@@ -1,7 +1,44 @@
-
+import { useEffect, useRef } from "react";
+import { Helmet } from "react-helmet-async";
 import PageLayout from "@/components/layout/PageLayout";
+import gsap from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
+
+gsap.registerPlugin(ScrollTrigger);
 
 const Services = () => {
+  const cardsRef = useRef<(HTMLDivElement | null)[]>([]);
+
+  useEffect(() => {
+    cardsRef.current.forEach((card, index) => {
+      if (card) {
+        gsap.fromTo(
+          card,
+          { 
+            opacity: 0, 
+            x: index % 2 === 0 ? -80 : 80,
+            rotateY: index % 2 === 0 ? -15 : 15
+          },
+          {
+            opacity: 1,
+            x: 0,
+            rotateY: 0,
+            duration: 1,
+            ease: "power3.out",
+            scrollTrigger: {
+              trigger: card,
+              start: "top 85%",
+              toggleActions: "play none none reverse"
+            }
+          }
+        );
+      }
+    });
+
+    return () => {
+      ScrollTrigger.getAll().forEach(trigger => trigger.kill());
+    };
+  }, []);
   const services = [
     {
       title: "Social Media Management",
@@ -109,8 +146,37 @@ const Services = () => {
     }
   ];
 
+  const structuredData = {
+    "@context": "https://schema.org",
+    "@type": "ItemList",
+    "itemListElement": services.map((service, index) => ({
+      "@type": "ListItem",
+      "position": index + 1,
+      "item": {
+        "@type": "Service",
+        "name": service.title,
+        "description": service.description
+      }
+    }))
+  };
+
   return (
     <PageLayout>
+      <Helmet>
+        <title>Digital Marketing Services | Avinash Singh | SEO, Social Media & PPC</title>
+        <meta name="description" content="Professional digital marketing services by Avinash Singh: Social Media Management, SEO, PPC Advertising, Content Marketing, Analytics & Email Marketing for business growth." />
+        <meta name="keywords" content="digital marketing services, SEO services, social media management, PPC advertising, content marketing, email marketing, Avinash Singh, digital marketing India" />
+        <link rel="canonical" href="https://avinashsingh.com/services" />
+        
+        <meta property="og:title" content="Digital Marketing Services by Avinash Singh" />
+        <meta property="og:description" content="Comprehensive digital marketing solutions including SEO, Social Media, PPC & Content Marketing" />
+        <meta property="og:url" content="https://avinashsingh.com/services" />
+        
+        <script type="application/ld+json">
+          {JSON.stringify(structuredData)}
+        </script>
+      </Helmet>
+      
       {/* Header */}
       <section className="py-20 bg-gradient-animation relative">
         <div className="container mx-auto px-6 relative z-10">
@@ -138,7 +204,11 @@ const Services = () => {
           
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
             {services.map((service, index) => (
-              <div key={index} className="card-3d p-8 flex flex-col h-full">
+              <div 
+                key={index}
+                ref={(el) => (cardsRef.current[index] = el)}
+                className="card-3d p-8 flex flex-col h-full"
+              >
                 <div className="text-brand-purple mb-6">
                   {service.icon}
                 </div>

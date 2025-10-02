@@ -1,8 +1,68 @@
+import { useEffect, useRef } from "react";
 import PageLayout from "@/components/layout/PageLayout";
 import { Avatar, AvatarImage } from "@/components/ui/avatar";
 import { Helmet } from "react-helmet-async";
+import gsap from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
+
+gsap.registerPlugin(ScrollTrigger);
 
 const About = () => {
+  const skillBarsRef = useRef<(HTMLDivElement | null)[]>([]);
+
+  useEffect(() => {
+    // Animate skill bars
+    skillBarsRef.current.forEach((bar, index) => {
+      if (bar) {
+        gsap.fromTo(
+          bar,
+          { width: "0%" },
+          {
+            width: bar.getAttribute("data-width") + "%",
+            duration: 1.5,
+            ease: "power2.out",
+            scrollTrigger: {
+              trigger: bar,
+              start: "top 85%",
+              toggleActions: "play none none reverse"
+            }
+          }
+        );
+      }
+    });
+
+    return () => {
+      ScrollTrigger.getAll().forEach(trigger => trigger.kill());
+    };
+  }, []);
+
+  const structuredData = {
+    "@context": "https://schema.org",
+    "@type": "Person",
+    "name": "Avinash Singh",
+    "jobTitle": "Digital Marketing Specialist",
+    "description": "Passionate digital marketing professional with 2+ years of experience, specializing in SEO, social media management, and content marketing",
+    "url": "https://avinashsingh.com/about",
+    "email": "Kuwar.avinashsingh82@gmail.com",
+    "alumniOf": {
+      "@type": "EducationalOrganization",
+      "name": "SRMS College of Engineering & Technology",
+      "location": "India"
+    },
+    "address": {
+      "@type": "PostalAddress",
+      "addressLocality": "Pratapgarh",
+      "addressRegion": "Uttar Pradesh",
+      "addressCountry": "India"
+    },
+    "knowsLanguage": ["English", "Hindi"],
+    "hasOccupation": {
+      "@type": "Occupation",
+      "name": "Digital Marketing Specialist",
+      "skills": ["SEO", "Social Media Management", "Content Marketing", "PPC Advertising", "Analytics", "Email Marketing"]
+    }
+  };
+
   // Skills data
   const skills = [
     { name: "SEO", percentage: 90 },
@@ -38,8 +98,17 @@ const About = () => {
       <Helmet>
         <title>About Avinash Singh | Digital Marketing Specialist | SEO & Social Media Expert</title>
         <meta name="description" content="Learn about Avinash Singh's background, skills, and experience in digital marketing, SEO, and social media management with over 2 years of expertise in the field." />
-        <meta name="keywords" content="digital marketing specialist, SEO expert, social media management, content marketing, Avinash Singh, Uttar Pradesh, India" />
+        <meta name="keywords" content="Avinash Singh, digital marketing specialist, SEO expert, social media management, content marketing, Uttar Pradesh, India, digital marketing professional" />
         <link rel="canonical" href="https://avinashsingh.com/about" />
+        
+        <meta property="og:title" content="About Avinash Singh | Digital Marketing Specialist" />
+        <meta property="og:description" content="Experienced Digital Marketing professional specializing in SEO, Social Media & Content Marketing" />
+        <meta property="og:url" content="https://avinashsingh.com/about" />
+        <meta property="og:image" content="https://i.postimg.cc/FzVmC0rk/Whats-App-Image-2025-05-07-at-17-14-34-420a56a6.jpg" />
+        
+        <script type="application/ld+json">
+          {JSON.stringify(structuredData)}
+        </script>
       </Helmet>
       
       {/* Header */}
@@ -145,9 +214,12 @@ const About = () => {
                     <span className="text-gray-600">{skill.percentage}%</span>
                   </div>
                   <div className="h-3 bg-gray-200 rounded-full overflow-hidden">
-                    <div className="h-full bg-gradient-to-r from-brand-purple to-brand-blue rounded-full" style={{
-                  width: `${skill.percentage}%`
-                }}></div>
+                    <div 
+                      ref={(el) => (skillBarsRef.current[index] = el)}
+                      data-width={skill.percentage}
+                      className="h-full bg-gradient-to-r from-brand-purple to-brand-blue rounded-full"
+                      style={{ width: "0%" }}
+                    ></div>
                   </div>
                 </div>)}
             </div>

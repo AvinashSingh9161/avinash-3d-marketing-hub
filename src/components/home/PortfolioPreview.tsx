@@ -1,11 +1,48 @@
-
+import { useEffect, useRef } from "react";
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import educationCampaignImage from "@/assets/education-social-campaign.jpg";
 import seoProjectImage from "@/assets/ias-seo-project.jpg";
 import ppcCampaignImage from "@/assets/elearning-ppc-campaign.jpg";
+import gsap from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
+
+gsap.registerPlugin(ScrollTrigger);
 
 const PortfolioPreview = () => {
+  const cardsRef = useRef<(HTMLDivElement | null)[]>([]);
+
+  useEffect(() => {
+    cardsRef.current.forEach((card, index) => {
+      if (card) {
+        gsap.fromTo(
+          card,
+          { 
+            opacity: 0, 
+            y: 100,
+            rotateX: 45
+          },
+          {
+            opacity: 1,
+            y: 0,
+            rotateX: 0,
+            duration: 1.2,
+            delay: index * 0.2,
+            ease: "power3.out",
+            scrollTrigger: {
+              trigger: card,
+              start: "top 85%",
+              toggleActions: "play none none reverse"
+            }
+          }
+        );
+      }
+    });
+
+    return () => {
+      ScrollTrigger.getAll().forEach(trigger => trigger.kill());
+    };
+  }, []);
   const projects = [
     {
       title: "Social Media Campaign",
@@ -40,7 +77,11 @@ const PortfolioPreview = () => {
         
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
           {projects.map((project, index) => (
-            <div key={index} className="card-3d overflow-hidden group">
+            <div 
+              key={index}
+              ref={(el) => (cardsRef.current[index] = el)}
+              className="card-3d overflow-hidden group"
+            >
               <div className="relative overflow-hidden" style={{ paddingBottom: '70%' }}>
                 <img 
                   src={project.image} 
