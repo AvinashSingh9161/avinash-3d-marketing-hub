@@ -47,7 +47,7 @@ const Auth = () => {
         });
         navigate("/admin");
       } else {
-        const { error } = await supabase.auth.signUp({
+        const { data, error } = await supabase.auth.signUp({
           email,
           password,
           options: {
@@ -60,11 +60,19 @@ const Auth = () => {
 
         if (error) throw error;
 
-        toast({
-          title: "Account created!",
-          description: "You can now log in with your credentials.",
-        });
-        setIsLogin(true);
+        // Auto-login after signup
+        if (data.session) {
+          toast({
+            title: "Welcome!",
+            description: "Your account has been created successfully.",
+          });
+          navigate("/admin");
+        } else {
+          toast({
+            title: "Account created!",
+            description: "Please check your email to confirm your account.",
+          });
+        }
       }
     } catch (error: any) {
       toast({
