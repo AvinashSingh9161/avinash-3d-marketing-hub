@@ -47,6 +47,7 @@ const Auth = () => {
         });
         navigate("/admin");
       } else {
+        // Sign up
         const { data, error } = await supabase.auth.signUp({
           email,
           password,
@@ -58,26 +59,48 @@ const Auth = () => {
           },
         });
 
-        if (error) throw error;
+        if (error) {
+          console.error("Signup error:", error);
+          throw error;
+        }
 
-        // Auto-login after signup
+        // Check if we got a session (auto-confirm is enabled)
         if (data.session) {
           toast({
             title: "Welcome!",
             description: "Your account has been created successfully.",
           });
           navigate("/admin");
-        } else {
+        } else if (data.user && !data.user.confirmed_at) {
+          // Email confirmation required
           toast({
             title: "Account created!",
             description: "Please check your email to confirm your account.",
           });
+        } else {
+          // Account created successfully with auto-confirm
+          toast({
+            title: "Account created!",
+            description: "You can now log in with your credentials.",
+          });
+          setIsLogin(true);
         }
       }
     } catch (error: any) {
+      console.error("Auth error:", error);
+      
+      // Better error messages
+      let errorMessage = error.message || "An unexpected error occurred";
+      
+      if (error.message?.includes("fetch")) {
+        errorMessage = "Network error. Please check your internet connection and try again.";
+      } else if (error.message?.includes("Email already registered")) {
+        errorMessage = "This email is already registered. Please login instead.";
+      }
+      
       toast({
         title: "Authentication error",
-        description: error.message,
+        description: errorMessage,
         variant: "destructive",
       });
     } finally {
