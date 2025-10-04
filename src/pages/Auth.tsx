@@ -33,12 +33,20 @@ const Auth = () => {
     setLoading(true);
 
     try {
+      console.log("=== AUTH DEBUG START ===");
+      console.log("Supabase URL:", import.meta.env.VITE_SUPABASE_URL);
+      console.log("Has Anon Key:", !!import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY);
+      console.log("Is Login:", isLogin);
+      console.log("Email:", email);
+      
       if (isLogin) {
-        const { error } = await supabase.auth.signInWithPassword({
+        console.log("Attempting login...");
+        const { error, data } = await supabase.auth.signInWithPassword({
           email,
           password,
         });
 
+        console.log("Login response:", { error, data });
         if (error) throw error;
 
         toast({
@@ -48,7 +56,10 @@ const Auth = () => {
         navigate("/admin");
       } else {
         // Sign up
-        const { data, error } = await supabase.auth.signUp({
+        console.log("Attempting signup...");
+        console.log("Full Name:", fullName);
+        
+        const signupData = {
           email,
           password,
           options: {
@@ -56,15 +67,28 @@ const Auth = () => {
               full_name: fullName,
             },
           },
-        });
+        };
+        
+        console.log("Signup payload:", signupData);
+        
+        const { data, error } = await supabase.auth.signUp(signupData);
+
+        console.log("Signup response:", { error, data });
+        console.log("Full error object:", JSON.stringify(error, null, 2));
 
         if (error) {
-          console.error("Signup error:", error);
+          console.error("Signup error details:", {
+            message: error.message,
+            status: error.status,
+            name: error.name,
+            stack: error.stack,
+          });
           throw error;
         }
 
         // Check if we got a session (auto-confirm is enabled)
         if (data.session) {
+          console.log("Got session, navigating to admin");
           toast({
             title: "Welcome!",
             description: "Your account has been created successfully.",
@@ -72,12 +96,14 @@ const Auth = () => {
           navigate("/admin");
         } else if (data.user && !data.user.confirmed_at) {
           // Email confirmation required
+          console.log("Email confirmation required");
           toast({
             title: "Account created!",
             description: "Please check your email to confirm your account.",
           });
         } else {
           // Account created successfully with auto-confirm
+          console.log("Account created, switching to login");
           toast({
             title: "Account created!",
             description: "You can now log in with your credentials.",
@@ -86,15 +112,24 @@ const Auth = () => {
         }
       }
     } catch (error: any) {
-      console.error("Auth error:", error);
+      console.error("=== AUTH ERROR ===");
+      console.error("Error type:", typeof error);
+      console.error("Error object:", error);
+      console.error("Error message:", error?.message);
+      console.error("Error status:", error?.status);
+      console.error("Error name:", error?.name);
+      console.error("Full error JSON:", JSON.stringify(error, null, 2));
       
       // Better error messages
       let errorMessage = error.message || "An unexpected error occurred";
       
-      if (error.message?.includes("fetch")) {
-        errorMessage = "Network error. Please check your internet connection and try again.";
-      } else if (error.message?.includes("Email already registered")) {
+      if (error.message?.includes("fetch") || error.name === "TypeError") {
+        errorMessage = "Network error. Unable to connect to authentication service. Please check your internet connection.";
+        console.error("NETWORK ERROR - Check Supabase URL and internet connection");
+      } else if (error.message?.includes("Email already registered") || error.message?.includes("already registered")) {
         errorMessage = "This email is already registered. Please login instead.";
+      } else if (error.status === 400) {
+        errorMessage = error.message;
       }
       
       toast({
@@ -103,6 +138,7 @@ const Auth = () => {
         variant: "destructive",
       });
     } finally {
+      console.log("=== AUTH DEBUG END ===");
       setLoading(false);
     }
   };
