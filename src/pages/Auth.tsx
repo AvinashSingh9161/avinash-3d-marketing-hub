@@ -52,7 +52,6 @@ const Auth = () => {
           email,
           password,
           options: {
-            emailRedirectTo: `${window.location.origin}/admin`,
             data: {
               full_name: fullName,
             },
