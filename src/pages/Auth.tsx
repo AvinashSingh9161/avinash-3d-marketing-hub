@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { Helmet } from "react-helmet-async";
+import { z } from "zod";
 import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -8,6 +9,13 @@ import { Label } from "@/components/ui/label";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { useToast } from "@/hooks/use-toast";
 import { Eye, EyeOff, LogIn, UserPlus } from "lucide-react";
+
+// Input validation schemas
+const authSchema = z.object({
+  email: z.string().trim().email("Invalid email address").max(255, "Email too long"),
+  password: z.string().min(6, "Password must be at least 6 characters").max(100, "Password too long"),
+  fullName: z.string().trim().min(1, "Name is required").max(100, "Name too long").optional(),
+});
 
 const Auth = () => {
   const [isLogin, setIsLogin] = useState(true);
@@ -33,20 +41,25 @@ const Auth = () => {
     setLoading(true);
 
     try {
-      console.log("=== AUTH DEBUG START ===");
-      console.log("Supabase URL:", import.meta.env.VITE_SUPABASE_URL);
-      console.log("Has Anon Key:", !!import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY);
-      console.log("Is Login:", isLogin);
-      console.log("Email:", email);
-      
+      // Validate inputs
+      const validationData = authSchema.safeParse({
+        email: email.trim(),
+        password,
+        fullName: !isLogin ? fullName.trim() : undefined,
+      });
+
+      if (!validationData.success) {
+        const firstError = validationData.error.errors[0];
+        throw new Error(firstError.message);
+      }
+
       if (isLogin) {
-        console.log("Attempting login...");
-        const { error, data } = await supabase.auth.signInWithPassword({
-          email,
-          password,
+        // Login
+        const { error } = await supabase.auth.signInWithPassword({
+          email: validationData.data.email,
+          password: validationData.data.password,
         });
 
-        console.log("Login response:", { error, data });
         if (error) throw error;
 
         toast({
@@ -55,56 +68,33 @@ const Auth = () => {
         });
         navigate("/admin");
       } else {
-        // Sign up
-        console.log("Attempting signup...");
-        console.log("Full Name:", fullName);
-        
-        const signupData = {
-          email,
-          password,
+        // Sign up with proper redirect URL
+        const { data, error } = await supabase.auth.signUp({
+          email: validationData.data.email,
+          password: validationData.data.password,
           options: {
             emailRedirectTo: `${window.location.origin}/admin`,
             data: {
-              full_name: fullName,
+              full_name: validationData.data.fullName,
             },
           },
-        };
-        
-        console.log("Signup payload:", signupData);
-        
-        const { data, error } = await supabase.auth.signUp(signupData);
+        });
 
-        console.log("Signup response:", { error, data });
-        console.log("Full error object:", JSON.stringify(error, null, 2));
-
-        if (error) {
-          console.error("Signup error details:", {
-            message: error.message,
-            status: error.status,
-            name: error.name,
-            stack: error.stack,
-          });
-          throw error;
-        }
+        if (error) throw error;
 
         // Check if we got a session (auto-confirm is enabled)
         if (data.session) {
-          console.log("Got session, navigating to admin");
           toast({
             title: "Welcome!",
             description: "Your account has been created successfully.",
           });
           navigate("/admin");
         } else if (data.user && !data.user.confirmed_at) {
-          // Email confirmation required
-          console.log("Email confirmation required");
           toast({
             title: "Account created!",
             description: "Please check your email to confirm your account.",
           });
         } else {
-          // Account created successfully with auto-confirm
-          console.log("Account created, switching to login");
           toast({
             title: "Account created!",
             description: "You can now log in with your credentials.",
@@ -113,24 +103,16 @@ const Auth = () => {
         }
       }
     } catch (error: any) {
-      console.error("=== AUTH ERROR ===");
-      console.error("Error type:", typeof error);
-      console.error("Error object:", error);
-      console.error("Error message:", error?.message);
-      console.error("Error status:", error?.status);
-      console.error("Error name:", error?.name);
-      console.error("Full error JSON:", JSON.stringify(error, null, 2));
-      
-      // Better error messages
       let errorMessage = error.message || "An unexpected error occurred";
       
-      if (error.message?.includes("fetch") || error.name === "TypeError") {
-        errorMessage = "Network error. Unable to connect to authentication service. Please check your internet connection.";
-        console.error("NETWORK ERROR - Check Supabase URL and internet connection");
-      } else if (error.message?.includes("Email already registered") || error.message?.includes("already registered")) {
+      // Handle specific error types
+      if (error.message?.toLowerCase().includes("user already registered")) {
         errorMessage = "This email is already registered. Please login instead.";
-      } else if (error.status === 400) {
-        errorMessage = error.message;
+        setIsLogin(true);
+      } else if (error.message?.toLowerCase().includes("invalid") && error.message?.toLowerCase().includes("credentials")) {
+        errorMessage = "Invalid email or password.";
+      } else if (error.name === "TypeError" || errorMessage.includes("fetch")) {
+        errorMessage = "Connection error. Please verify your internet connection and try again.";
       }
       
       toast({
@@ -139,7 +121,6 @@ const Auth = () => {
         variant: "destructive",
       });
     } finally {
-      console.log("=== AUTH DEBUG END ===");
       setLoading(false);
     }
   };
