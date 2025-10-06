@@ -31,12 +31,16 @@ const Admin = () => {
       setUser(session.user);
 
       // Check if user has admin role
-      const { data: roles } = await supabase
+      const { data: roles, error } = await supabase
         .from("user_roles")
         .select("role")
         .eq("user_id", session.user.id)
         .eq("role", "admin")
-        .single();
+        .maybeSingle();
+
+      if (error) {
+        console.error("Error checking admin role:", error);
+      }
 
       setIsAdmin(!!roles);
       setLoading(false);
