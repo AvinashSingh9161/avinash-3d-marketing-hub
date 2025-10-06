@@ -19,35 +19,50 @@ const Admin = () => {
   const { toast } = useToast();
 
   useEffect(() => {
+    let mounted = true;
+
     // Check authentication and admin role
     const checkAuth = async () => {
-      const { data: { session } } = await supabase.auth.getSession();
-      
-      console.log("Session check:", session?.user?.id);
-      
-      if (!session?.user) {
-        navigate("/auth");
-        return;
+      try {
+        const { data: { session }, error: sessionError } = await supabase.auth.getSession();
+        
+        if (sessionError) {
+          console.error("Session error:", sessionError);
+          if (mounted) navigate("/auth");
+          return;
+        }
+        
+        if (!session?.user) {
+          if (mounted) navigate("/auth");
+          return;
+        }
+
+        if (mounted) setUser(session.user);
+
+        // Check if user has admin role
+        const { data: roles, error } = await supabase
+          .from("user_roles")
+          .select("role")
+          .eq("user_id", session.user.id);
+
+        console.log("Admin check results:", {
+          userId: session.user.id,
+          roles: roles,
+          error: error,
+          hasAdmin: roles?.some(r => r.role === 'admin')
+        });
+
+        if (mounted) {
+          setIsAdmin(roles?.some(r => r.role === 'admin') || false);
+          setLoading(false);
+        }
+      } catch (err) {
+        console.error("Error in checkAuth:", err);
+        if (mounted) {
+          setLoading(false);
+          navigate("/auth");
+        }
       }
-
-      setUser(session.user);
-
-      // Check if user has admin role
-      const { data: roles, error } = await supabase
-        .from("user_roles")
-        .select("*")
-        .eq("user_id", session.user.id);
-
-      console.log("Admin check - roles data:", roles);
-      console.log("Admin check - error:", error);
-      console.log("Admin check - user_id:", session.user.id);
-
-      // Check if any role returned is 'admin'
-      const hasAdminRole = roles?.some(r => r.role === 'admin');
-      console.log("Has admin role:", hasAdminRole);
-
-      setIsAdmin(hasAdminRole || false);
-      setLoading(false);
     };
 
     checkAuth();
@@ -58,14 +73,16 @@ const Admin = () => {
     } = supabase.auth.onAuthStateChange((_event, session) => {
       if (session?.user) {
         setUser(session.user);
-        // Recheck admin status
         checkAuth();
       } else {
-        navigate("/auth");
+        if (mounted) navigate("/auth");
       }
     });
 
-    return () => subscription.unsubscribe();
+    return () => {
+      mounted = false;
+      subscription.unsubscribe();
+    };
   }, [navigate]);
 
   const handleLogout = async () => {
