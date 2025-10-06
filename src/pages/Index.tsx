@@ -16,8 +16,8 @@ const Index = () => {
         "name": "Avinash Singh",
         "url": "https://avinashsingh.com",
         "image": "https://i.postimg.cc/FzVmC0rk/Whats-App-Image-2025-05-07-at-17-14-34-420a56a6.jpg",
-        "jobTitle": "Digital Marketing Specialist",
-        "description": "Expert Digital Marketing Specialist with 2+ years of experience in SEO, Social Media Management, PPC, and Content Marketing",
+        "jobTitle": "Digital Marketing Executive",
+        "description": "Results-driven Digital Marketing Executive specializing in SEO, content strategy, and organic growth",
         "alumniOf": {
           "@type": "EducationalOrganization",
           "name": "SRMS College of Engineering & Technology"
@@ -99,23 +99,23 @@ const Index = () => {
   return (
     <>
       <Helmet>
-        <title>Avinash Singh | Digital Marketing Specialist | SEO Expert India</title>
-        <meta name="description" content="Avinash Singh - Professional Digital Marketing Specialist with 2+ years experience in SEO, Social Media Management, PPC & Content Marketing. Helping businesses grow online in India." />
+        <title>Avinash Singh | Digital Marketing Executive & SEO Specialist</title>
+        <meta name="description" content="Avinash Singh is a results-driven Digital Marketing Executive specializing in SEO, content strategy, and organic growth. Explore my portfolio, case studies, and get in touch." />
         <meta name="keywords" content="Avinash Singh, digital marketing specialist, SEO expert, social media marketing, PPC advertising, content marketing, digital marketing India, Avinash Singh digital marketer" />
         <link rel="canonical" href="https://avinashsingh.com/" />
         
         {/* Open Graph */}
         <meta property="og:type" content="website" />
         <meta property="og:url" content="https://avinashsingh.com/" />
-        <meta property="og:title" content="Avinash Singh | Digital Marketing Specialist | SEO Expert" />
-        <meta property="og:description" content="Professional Digital Marketing services by Avinash Singh. Expert in SEO, Social Media, PPC & Content Marketing. Transform your online presence." />
+        <meta property="og:title" content="Avinash Singh | Digital Marketing Executive & SEO Specialist" />
+        <meta property="og:description" content="Avinash Singh is a results-driven Digital Marketing Executive specializing in SEO, content strategy, and organic growth. Explore my portfolio, case studies, and get in touch." />
         <meta property="og:image" content="https://i.postimg.cc/FzVmC0rk/Whats-App-Image-2025-05-07-at-17-14-34-420a56a6.jpg" />
         
         {/* Twitter Card */}
         <meta name="twitter:card" content="summary_large_image" />
         <meta name="twitter:url" content="https://avinashsingh.com/" />
-        <meta name="twitter:title" content="Avinash Singh | Digital Marketing Specialist" />
-        <meta name="twitter:description" content="Expert Digital Marketing services - SEO, Social Media, PPC & Content Marketing" />
+        <meta name="twitter:title" content="Avinash Singh | Digital Marketing Executive & SEO Specialist" />
+        <meta name="twitter:description" content="Avinash Singh is a results-driven Digital Marketing Executive specializing in SEO, content strategy, and organic growth. Explore my portfolio, case studies, and get in touch." />
         <meta name="twitter:image" content="https://i.postimg.cc/FzVmC0rk/Whats-App-Image-2025-05-07-at-17-14-34-420a56a6.jpg" />
         
         {/* Structured Data */}
