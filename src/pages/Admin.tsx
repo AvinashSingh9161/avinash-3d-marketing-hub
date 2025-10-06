@@ -23,6 +23,8 @@ const Admin = () => {
     const checkAuth = async () => {
       const { data: { session } } = await supabase.auth.getSession();
       
+      console.log("Session check:", session?.user?.id);
+      
       if (!session?.user) {
         navigate("/auth");
         return;
@@ -33,16 +35,18 @@ const Admin = () => {
       // Check if user has admin role
       const { data: roles, error } = await supabase
         .from("user_roles")
-        .select("role")
-        .eq("user_id", session.user.id)
-        .eq("role", "admin")
-        .maybeSingle();
+        .select("*")
+        .eq("user_id", session.user.id);
 
-      if (error) {
-        console.error("Error checking admin role:", error);
-      }
+      console.log("Admin check - roles data:", roles);
+      console.log("Admin check - error:", error);
+      console.log("Admin check - user_id:", session.user.id);
 
-      setIsAdmin(!!roles);
+      // Check if any role returned is 'admin'
+      const hasAdminRole = roles?.some(r => r.role === 'admin');
+      console.log("Has admin role:", hasAdminRole);
+
+      setIsAdmin(hasAdminRole || false);
       setLoading(false);
     };
 
