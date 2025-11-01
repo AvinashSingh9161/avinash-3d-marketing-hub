@@ -15,7 +15,7 @@ const ContactInfo = () => {
           </div>
           <div>
             <h3 className="text-lg font-bold mb-1">Email</h3>
-            <a href="mailto:contact@avinashsingh.com" className="text-gray-600 hover:text-brand-purple transition-colors">kuwar.avinashsingh82@gmail.com</a>
+            <a href="mailto:kuwar.avinashsingh82@gmail.com" className="text-gray-600 hover:text-brand-purple transition-colors">kuwar.avinashsingh82@gmail.com</a>
           </div>
         </div>
         

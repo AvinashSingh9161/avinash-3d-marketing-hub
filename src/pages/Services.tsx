@@ -166,11 +166,11 @@ const Services = () => {
         <title>Digital Marketing Services | Avinash Singh | SEO, Social Media & PPC</title>
         <meta name="description" content="Professional digital marketing services by Avinash Singh: Social Media Management, SEO, PPC Advertising, Content Marketing, Analytics & Email Marketing for business growth." />
         <meta name="keywords" content="digital marketing services, SEO services, social media management, PPC advertising, content marketing, email marketing, Avinash Singh, digital marketing India" />
-        <link rel="canonical" href="https://avinashsingh.com/services" />
+        <link rel="canonical" href="https://avinashsingh.info/services" />
         
         <meta property="og:title" content="Digital Marketing Services by Avinash Singh" />
         <meta property="og:description" content="Comprehensive digital marketing solutions including SEO, Social Media, PPC & Content Marketing" />
-        <meta property="og:url" content="https://avinashsingh.com/services" />
+        <meta property="og:url" content="https://avinashsingh.info/services" />
         
         <script type="application/ld+json">
           {JSON.stringify(structuredData)}

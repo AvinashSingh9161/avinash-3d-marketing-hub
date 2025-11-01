@@ -42,7 +42,7 @@ const About = () => {
     "name": "Avinash Singh",
     "jobTitle": "Digital Marketing Specialist",
     "description": "Passionate digital marketing professional with 2+ years of experience, specializing in SEO, social media management, and content marketing",
-    "url": "https://avinashsingh.com/about",
+    "url": "https://avinashsingh.info/about",
     "email": "Kuwar.avinashsingh82@gmail.com",
     "alumniOf": {
       "@type": "EducationalOrganization",
@@ -99,11 +99,11 @@ const About = () => {
         <title>About Avinash Singh | Digital Marketing Specialist | SEO & Social Media Expert</title>
         <meta name="description" content="Learn about Avinash Singh's background, skills, and experience in digital marketing, SEO, and social media management with over 2 years of expertise in the field." />
         <meta name="keywords" content="Avinash Singh, digital marketing specialist, SEO expert, social media management, content marketing, Uttar Pradesh, India, digital marketing professional" />
-        <link rel="canonical" href="https://avinashsingh.com/about" />
+        <link rel="canonical" href="https://avinashsingh.info/about" />
         
         <meta property="og:title" content="About Avinash Singh | Digital Marketing Specialist" />
         <meta property="og:description" content="Experienced Digital Marketing professional specializing in SEO, Social Media & Content Marketing" />
-        <meta property="og:url" content="https://avinashsingh.com/about" />
+        <meta property="og:url" content="https://avinashsingh.info/about" />
         <meta property="og:image" content="https://i.postimg.cc/FzVmC0rk/Whats-App-Image-2025-05-07-at-17-14-34-420a56a6.jpg" />
         
         <script type="application/ld+json">
