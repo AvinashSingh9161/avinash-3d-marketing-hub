@@ -1,8 +1,9 @@
-
-import { ReactNode } from "react";
+import { ReactNode, Suspense, lazy } from "react";
 import Navbar from "./Navbar";
 import Footer from "./Footer";
-import { ChatButton } from "@/components/ai-bot/ChatButton";
+
+// Lazy load ChatButton since it's not critical for initial render
+const ChatButton = lazy(() => import("@/components/ai-bot/ChatButton").then(module => ({ default: module.ChatButton })));
 
 interface PageLayoutProps {
   children: ReactNode;
@@ -16,7 +17,9 @@ const PageLayout = ({ children }: PageLayoutProps) => {
         {children}
       </main>
       <Footer />
-      <ChatButton />
+      <Suspense fallback={<div />}>
+        <ChatButton />
+      </Suspense>
     </div>
   );
 };
