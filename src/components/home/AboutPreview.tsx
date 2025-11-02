@@ -127,7 +127,11 @@ const AboutPreview = () => {
                       data-width={skill.percentage}
                       className="h-full bg-gradient-to-r from-brand-purple to-brand-blue rounded-full"
                       style={{ width: "0%" }}
+                      role="progressbar"
                       aria-label={`${skill.name} skill level: ${skill.percentage}%`}
+                      aria-valuemin={0}
+                      aria-valuemax={100}
+                      aria-valuenow={skill.percentage}
                     ></div>
                   </div>
                 </div>
