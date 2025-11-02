@@ -142,7 +142,7 @@ const HeroSection = () => {
               Specialized in social media management, SEO, content marketing, and paid advertising.
             </p>
             <div ref={buttonsRef} className="flex flex-wrap gap-4">
-              <Button asChild size="lg" className="bg-white text-brand-purple hover:bg-white/90">
+              <Button asChild size="lg" className="bg-white text-purple-700 hover:bg-white/90 hover:text-purple-800">
                 <Link to="/contact">
                   Hire Me <ArrowRight className="ml-2 h-4 w-4" />
                 </Link>

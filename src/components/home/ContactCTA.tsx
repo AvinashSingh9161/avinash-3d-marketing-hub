@@ -17,7 +17,7 @@ const ContactCTA = () => {
             Let's collaborate to create data-driven marketing strategies that will help your business grow. 
             Contact me today to discuss how I can help you achieve your digital marketing goals.
           </p>
-          <Button asChild size="lg" className="bg-white text-brand-purple hover:bg-white/90">
+          <Button asChild size="lg" className="bg-white text-purple-700 hover:bg-white/90 hover:text-purple-800">
             <Link to="/contact">
               Get in Touch <ArrowRight className="ml-2 h-4 w-4" />
             </Link>
