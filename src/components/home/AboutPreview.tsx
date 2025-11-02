@@ -108,7 +108,7 @@ const AboutPreview = () => {
             </div>
             
             <Button asChild>
-              <Link to="/about" aria-label="Learn more about Avinash Singh's digital marketing expertise">Learn More About Me</Link>
+              <Link to="/about">Learn More About Me</Link>
             </Button>
           </div>
           
