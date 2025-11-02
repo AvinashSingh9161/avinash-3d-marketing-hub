@@ -1,1 +1,7 @@
+# Redirect old pages to new structure
+/about / 301
+/services /projects 301
+/portfolio /projects 301
+
+# SPA fallback
 /* /index.html 200

@@ -96,7 +96,7 @@ const PortfolioPreview = () => {
               <div className="p-6">
                 <h3 className="text-xl font-bold mb-2">{project.title}</h3>
                 <p className="text-gray-600 mb-4">{project.description}</p>
-                <Link to="/portfolio" className="text-brand-purple font-medium hover:text-brand-blue transition-colors">
+                <Link to="/projects" className="text-brand-purple font-medium hover:text-brand-blue transition-colors">
                   View Details
                 </Link>
               </div>
@@ -106,7 +106,7 @@ const PortfolioPreview = () => {
         
         <div className="text-center mt-12">
           <Button asChild>
-            <Link to="/portfolio">View All Projects</Link>
+            <Link to="/projects">View All Projects</Link>
           </Button>
         </div>
       </div>

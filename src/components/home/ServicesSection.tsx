@@ -152,7 +152,7 @@ const ServicesSection = () => {
         
         <div className="text-center mt-12">
           <Button asChild>
-            <Link to="/services">View All Services</Link>
+            <Link to="/projects">View All Services</Link>
           </Button>
         </div>
       </div>

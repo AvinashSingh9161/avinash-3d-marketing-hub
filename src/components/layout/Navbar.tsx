@@ -26,12 +26,9 @@ const Navbar = () => {
   };
 
   const menuItems = [
-    { title: "Home", path: "/" },
-    { title: "About", path: "/about" },
-    { title: "Services", path: "/services" },
-    { title: "Portfolio", path: "/portfolio" },
+    { title: "Portfolio", path: "/" },
     { title: "Blog", path: "/blog" },
-    { title: "Contact", path: "/contact" }
+    { title: "Projects", path: "/projects" }
   ];
 
   const isActive = (path: string) => {
