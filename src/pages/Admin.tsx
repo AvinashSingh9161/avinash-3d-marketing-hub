@@ -39,21 +39,21 @@ const Admin = () => {
 
         if (mounted) setUser(session.user);
 
-        // Check if user has admin role
-        const { data: roles, error } = await supabase
-          .from("user_roles")
-          .select("role")
-          .eq("user_id", session.user.id);
+        // Verify admin role using server-side edge function
+        const { data: adminCheckData, error: adminError } = await supabase.functions.invoke('verify-admin', {
+          headers: {
+            Authorization: `Bearer ${session.access_token}`,
+          },
+        });
 
         console.log("Admin check results:", {
           userId: session.user.id,
-          roles: roles,
-          error: error,
-          hasAdmin: roles?.some(r => r.role === 'admin')
+          adminCheckData,
+          error: adminError,
         });
 
         if (mounted) {
-          setIsAdmin(roles?.some(r => r.role === 'admin') || false);
+          setIsAdmin(adminCheckData?.isAdmin === true);
           setLoading(false);
         }
       } catch (err) {
