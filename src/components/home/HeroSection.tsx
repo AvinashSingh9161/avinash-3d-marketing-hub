@@ -165,6 +165,7 @@ const HeroSection = () => {
                   src="https://i.postimg.cc/FzVmC0rk/Whats-App-Image-2025-05-07-at-17-14-34-420a56a6.jpg" 
                   alt="Avinash Singh - Digital Marketing Specialist" 
                   className="w-full h-full object-cover"
+                  fetchPriority="high"
                 />
               </div>
               <div 
