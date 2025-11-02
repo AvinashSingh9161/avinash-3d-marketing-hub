@@ -143,74 +143,57 @@ const Portfolio = () => {
         {/* About Me Section */}
         <section className="py-20" id="about">
           <div className="container mx-auto px-6">
-            <div className="text-center mb-16">
-              <h2 className="text-3xl md:text-4xl font-bold font-poppins mb-4">About Me</h2>
-              <div className="w-24 h-1 bg-gradient-to-r from-brand-purple to-brand-blue mx-auto mb-6"></div>
-            </div>
-
-            <div className="flex flex-col lg:flex-row items-center gap-12">
-              <div className="w-full lg:w-1/2">
-                <div className="relative mb-8 flex justify-center lg:justify-start">
-                  <div className="w-64 h-64 sm:w-72 sm:h-72 rounded-full overflow-hidden border-4 border-white shadow-3d">
-                    <Avatar className="w-full h-full">
-                      <AvatarImage 
-                        src="https://i.postimg.cc/FzVmC0rk/Whats-App-Image-2025-05-07-at-17-14-34-420a56a6.jpg" 
-                        alt="Avinash Singh - Digital Marketing Specialist" 
-                        className="w-full h-full object-cover" 
-                      />
-                    </Avatar>
+            <div className="max-w-4xl mx-auto">
+              <div className="flex flex-col lg:flex-row gap-12">
+                <div className="w-full lg:w-1/3">
+                  <div className="card-3d p-6">
+                    <h3 className="text-xl font-bold mb-4">Personal Information</h3>
+                    <ul className="space-y-4">
+                      <li className="flex flex-wrap">
+                        <span className="font-semibold w-32">Name:</span>
+                        <span className="text-gray-600">Avinash Singh</span>
+                      </li>
+                      <li className="flex flex-wrap">
+                        <span className="font-semibold w-32">Location:</span>
+                        <span className="text-gray-600">Pratapgarh, Uttar Pradesh, India</span>
+                      </li>
+                      <li className="flex flex-wrap">
+                        <span className="font-semibold w-32">Email:</span>
+                        <span className="text-gray-600">Kuwar.avinashsingh82@gmail.com</span>
+                      </li>
+                      <li className="flex flex-wrap">
+                        <span className="font-semibold w-32">Experience:</span>
+                        <span className="text-gray-600">2+ Years</span>
+                      </li>
+                      <li className="flex flex-wrap">
+                        <span className="font-semibold w-32">Languages:</span>
+                        <span className="text-gray-600">English, Hindi</span>
+                      </li>
+                    </ul>
                   </div>
                 </div>
-                <div className="card-3d p-6">
-                  <h3 className="text-xl font-bold mb-4">Personal Information</h3>
-                  <ul className="space-y-4">
-                    <li className="flex flex-wrap">
-                      <span className="font-semibold w-32">Name:</span>
-                      <span className="text-gray-600">Avinash Singh</span>
-                    </li>
-                    <li className="flex flex-wrap">
-                      <span className="font-semibold w-32">Location:</span>
-                      <span className="text-gray-600">Pratapgarh, Uttar Pradesh, India</span>
-                    </li>
-                    <li className="flex flex-wrap">
-                      <span className="font-semibold w-32">Email:</span>
-                      <span className="text-gray-600">Kuwar.avinashsingh82@gmail.com</span>
-                    </li>
-                    <li className="flex flex-wrap">
-                      <span className="font-semibold w-32">Experience:</span>
-                      <span className="text-gray-600">2+ Years</span>
-                    </li>
-                    <li className="flex flex-wrap">
-                      <span className="font-semibold w-32">Languages:</span>
-                      <span className="text-gray-600">English, Hindi</span>
-                    </li>
-                  </ul>
-                </div>
-              </div>
-              
-              <div className="w-full lg:w-1/2">
-                <h3 className="text-3xl font-bold font-poppins mb-6">Avinash Singh</h3>
-                <h4 className="text-xl font-semibold text-brand-purple mb-4">Digital Marketing Specialist</h4>
                 
-                <p className="text-gray-600 mb-6">
-                  I'm a passionate digital marketing professional with 2+ years of experience, specializing in helping brands establish a strong online presence and drive growth through data-driven strategies and creative campaigns.
-                </p>
-                
-                <p className="text-gray-600 mb-6">
-                  With a background in Mechanical Engineering and specialized skills in digital marketing, I bring an analytical mindset combined with creative problem-solving to every project I take on.
-                </p>
-                
-                <p className="text-gray-600 mb-6">
-                  My approach focuses on understanding business goals and target audiences to create tailored marketing solutions that deliver measurable results, whether it's increasing brand awareness, generating leads, or driving conversions.
-                </p>
-                
-                <div className="flex flex-wrap gap-3 mt-8">
-                  <span className="bg-gray-100 text-gray-800 rounded-full px-4 py-2 text-sm font-medium">SEO</span>
-                  <span className="bg-gray-100 text-gray-800 rounded-full px-4 py-2 text-sm font-medium">Social Media</span>
-                  <span className="bg-gray-100 text-gray-800 rounded-full px-4 py-2 text-sm font-medium">Content Marketing</span>
-                  <span className="bg-gray-100 text-gray-800 rounded-full px-4 py-2 text-sm font-medium">PPC</span>
-                  <span className="bg-gray-100 text-gray-800 rounded-full px-4 py-2 text-sm font-medium">Analytics</span>
-                  <span className="bg-gray-100 text-gray-800 rounded-full px-4 py-2 text-sm font-medium">Email Marketing</span>
+                <div className="w-full lg:w-2/3">
+                  <p className="text-gray-600 mb-6">
+                    I'm a passionate digital marketing professional with 2+ years of experience, specializing in helping brands establish a strong online presence and drive growth through data-driven strategies and creative campaigns.
+                  </p>
+                  
+                  <p className="text-gray-600 mb-6">
+                    With a background in Mechanical Engineering and specialized skills in digital marketing, I bring an analytical mindset combined with creative problem-solving to every project I take on.
+                  </p>
+                  
+                  <p className="text-gray-600 mb-6">
+                    My approach focuses on understanding business goals and target audiences to create tailored marketing solutions that deliver measurable results, whether it's increasing brand awareness, generating leads, or driving conversions.
+                  </p>
+                  
+                  <div className="flex flex-wrap gap-3 mt-8">
+                    <span className="bg-gray-100 text-gray-800 rounded-full px-4 py-2 text-sm font-medium">SEO</span>
+                    <span className="bg-gray-100 text-gray-800 rounded-full px-4 py-2 text-sm font-medium">Social Media</span>
+                    <span className="bg-gray-100 text-gray-800 rounded-full px-4 py-2 text-sm font-medium">Content Marketing</span>
+                    <span className="bg-gray-100 text-gray-800 rounded-full px-4 py-2 text-sm font-medium">PPC</span>
+                    <span className="bg-gray-100 text-gray-800 rounded-full px-4 py-2 text-sm font-medium">Analytics</span>
+                    <span className="bg-gray-100 text-gray-800 rounded-full px-4 py-2 text-sm font-medium">Email Marketing</span>
+                  </div>
                 </div>
               </div>
             </div>
