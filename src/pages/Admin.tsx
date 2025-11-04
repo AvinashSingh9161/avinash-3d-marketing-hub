@@ -13,6 +13,7 @@ import { CalendarWidget } from "@/components/admin/CalendarWidget";
 import { RecentPostsTable } from "@/components/admin/RecentPostsTable";
 import { BlogPostList } from "@/components/admin/BlogPostList";
 import { CreateEditPost } from "@/components/admin/CreateEditPost";
+import { useAdminAnalytics } from "@/hooks/useAdminAnalytics";
 
 const Admin = () => {
   const [user, setUser] = useState<User | null>(null);
@@ -23,6 +24,9 @@ const Admin = () => {
   const [editingPostId, setEditingPostId] = useState<string | null>(null);
   const navigate = useNavigate();
   const { toast } = useToast();
+  
+  // Fetch real analytics data
+  const { stats, dailyTraffic, loading: analyticsLoading } = useAdminAnalytics(30);
 
   useEffect(() => {
     let mounted = true;
@@ -205,7 +209,7 @@ const Admin = () => {
                 <div className="p-8 space-y-6">
                   {/* Header */}
                   <div className="flex items-center justify-between">
-                    <h1 className="text-3xl font-bold">Welcome back, John!</h1>
+                    <h1 className="text-3xl font-bold">Welcome back!</h1>
                     <Button onClick={handleCreateNew}>
                       <Plus className="mr-2 h-4 w-4" /> Create New Post
                     </Button>
@@ -215,34 +219,34 @@ const Admin = () => {
                   <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
                     <StatsCard
                       title="Total Visitors"
-                      value="12,435"
-                      change="+12.5%"
-                      isPositive={true}
+                      value={stats?.totalVisitors.toLocaleString() || "0"}
+                      loading={analyticsLoading}
                     />
                     <StatsCard
                       title="Page Views"
-                      value="54,123"
-                      change="+8.2%"
-                      isPositive={true}
+                      value={stats?.totalPageViews.toLocaleString() || "0"}
+                      loading={analyticsLoading}
                     />
                     <StatsCard
-                      title="Bounce Rate"
-                      value="34.5%"
-                      change="-2.1%"
-                      isPositive={false}
+                      title="Unique Sessions"
+                      value={stats?.uniqueSessions.toLocaleString() || "0"}
+                      loading={analyticsLoading}
                     />
                     <StatsCard
-                      title="New vs Returning"
-                      value="8,123 vs 4,312"
-                      change="+5.7%"
-                      isPositive={true}
+                      title="Avg Pages/Session"
+                      value={stats?.avgPagesPerSession.toFixed(1) || "0"}
+                      loading={analyticsLoading}
                     />
                   </div>
 
                   {/* Chart and Calendar */}
                   <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
                     <div className="lg:col-span-2">
-                      <TrafficChart />
+                      <TrafficChart 
+                        data={dailyTraffic} 
+                        totalViews={stats?.totalPageViews || 0}
+                        loading={analyticsLoading}
+                      />
                     </div>
                     <div>
                       <CalendarWidget />

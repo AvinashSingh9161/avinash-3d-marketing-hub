@@ -98,6 +98,36 @@ export type Database = {
         }
         Relationships: []
       }
+      page_views: {
+        Row: {
+          created_at: string | null
+          id: string
+          page_path: string
+          referrer: string | null
+          session_id: string
+          user_agent: string | null
+          user_id: string | null
+        }
+        Insert: {
+          created_at?: string | null
+          id?: string
+          page_path: string
+          referrer?: string | null
+          session_id: string
+          user_agent?: string | null
+          user_id?: string | null
+        }
+        Update: {
+          created_at?: string | null
+          id?: string
+          page_path?: string
+          referrer?: string | null
+          session_id?: string
+          user_agent?: string | null
+          user_id?: string | null
+        }
+        Relationships: []
+      }
       post_tags: {
         Row: {
           post_id: string
@@ -217,6 +247,23 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
+      get_analytics_stats: {
+        Args: { days_ago?: number }
+        Returns: {
+          avg_pages_per_session: number
+          total_page_views: number
+          total_visitors: number
+          unique_sessions: number
+        }[]
+      }
+      get_daily_traffic: {
+        Args: { days_ago?: number }
+        Returns: {
+          date: string
+          page_views: number
+          unique_sessions: number
+        }[]
+      }
       get_public_profile: {
         Args: { profile_id: string }
         Returns: {
