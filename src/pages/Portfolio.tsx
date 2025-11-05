@@ -2,6 +2,9 @@ import { useEffect, useRef } from "react";
 import { Helmet } from "react-helmet-async";
 import PageLayout from "@/components/layout/PageLayout";
 import { Avatar, AvatarImage } from "@/components/ui/avatar";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Badge } from "@/components/ui/badge";
+import { MapPin, Mail, Globe, Calendar } from "lucide-react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import HeroSection from "@/components/home/HeroSection";
@@ -141,58 +144,89 @@ const Portfolio = () => {
         <HeroSection />
         
         {/* About Me Section */}
-        <section className="py-20" id="about">
+        <section className="py-20 bg-gradient-to-b from-background to-accent/5" id="about">
           <div className="container mx-auto px-6">
-            <div className="max-w-4xl mx-auto">
-              <div className="flex flex-col lg:flex-row gap-12">
-                <div className="w-full lg:w-1/3">
-                  <div className="card-3d p-6">
-                    <h3 className="text-xl font-bold mb-4">Personal Information</h3>
-                    <ul className="space-y-4">
-                      <li className="flex flex-wrap">
-                        <span className="font-semibold w-32">Name:</span>
-                        <span className="text-gray-600">Avinash Singh</span>
-                      </li>
-                      <li className="flex flex-wrap">
-                        <span className="font-semibold w-32">Location:</span>
-                        <span className="text-gray-600">Pratapgarh, Uttar Pradesh, India</span>
-                      </li>
-                      <li className="flex flex-wrap">
-                        <span className="font-semibold w-32">Email:</span>
-                        <span className="text-gray-600">Kuwar.avinashsingh82@gmail.com</span>
-                      </li>
-                      <li className="flex flex-wrap">
-                        <span className="font-semibold w-32">Experience:</span>
-                        <span className="text-gray-600">2+ Years</span>
-                      </li>
-                      <li className="flex flex-wrap">
-                        <span className="font-semibold w-32">Languages:</span>
-                        <span className="text-gray-600">English, Hindi</span>
-                      </li>
-                    </ul>
-                  </div>
+            <div className="max-w-6xl mx-auto">
+              <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+                {/* Personal Information Card */}
+                <div className="lg:col-span-1">
+                  <Card className="border-2 hover:shadow-lg transition-all duration-300">
+                    <CardHeader>
+                      <CardTitle className="text-2xl">Personal Information</CardTitle>
+                    </CardHeader>
+                    <CardContent className="space-y-5">
+                      <div className="space-y-1">
+                        <p className="font-semibold text-sm text-muted-foreground">Name:</p>
+                        <p className="text-base font-medium">Avinash Singh</p>
+                      </div>
+                      
+                      <div className="space-y-1">
+                        <div className="flex items-center gap-2 text-sm text-muted-foreground">
+                          <MapPin className="w-4 h-4" />
+                          <p className="font-semibold">Location:</p>
+                        </div>
+                        <p className="text-base">Pratapgarh, Uttar Pradesh, India</p>
+                      </div>
+                      
+                      <div className="space-y-1">
+                        <div className="flex items-center gap-2 text-sm text-muted-foreground">
+                          <Mail className="w-4 h-4" />
+                          <p className="font-semibold">Email:</p>
+                        </div>
+                        <p className="text-base break-all">Kuwar.avinashsingh82@gmail.com</p>
+                      </div>
+                      
+                      <div className="space-y-1">
+                        <div className="flex items-center gap-2 text-sm text-muted-foreground">
+                          <Calendar className="w-4 h-4" />
+                          <p className="font-semibold">Experience:</p>
+                        </div>
+                        <p className="text-base font-medium">2+ Years</p>
+                      </div>
+                      
+                      <div className="space-y-1">
+                        <div className="flex items-center gap-2 text-sm text-muted-foreground">
+                          <Globe className="w-4 h-4" />
+                          <p className="font-semibold">Languages:</p>
+                        </div>
+                        <p className="text-base">English, Hindi</p>
+                      </div>
+                    </CardContent>
+                  </Card>
                 </div>
                 
-                <div className="w-full lg:w-2/3">
-                  <p className="text-gray-600 mb-6">
-                    I'm a passionate digital marketing professional with 2+ years of experience, specializing in helping brands establish a strong online presence and drive growth through data-driven strategies and creative campaigns.
-                  </p>
+                {/* About Content */}
+                <div className="lg:col-span-2 space-y-6">
+                  <div>
+                    <h2 className="text-3xl md:text-4xl font-bold font-poppins mb-4">About Me</h2>
+                    <div className="w-24 h-1 bg-gradient-to-r from-primary to-primary/60 mb-6"></div>
+                  </div>
                   
-                  <p className="text-gray-600 mb-6">
-                    With a background in Mechanical Engineering and specialized skills in digital marketing, I bring an analytical mindset combined with creative problem-solving to every project I take on.
-                  </p>
+                  <div className="space-y-4 text-base leading-relaxed">
+                    <p className="text-muted-foreground">
+                      I'm a passionate digital marketing professional with <span className="font-semibold text-foreground">2+ years of experience</span>, specializing in helping brands establish a strong online presence and drive growth through data-driven strategies and creative campaigns.
+                    </p>
+                    
+                    <p className="text-muted-foreground">
+                      With a background in <span className="font-semibold text-foreground">Mechanical Engineering</span> and specialized skills in digital marketing, I bring an analytical mindset combined with creative problem-solving to every project I take on.
+                    </p>
+                    
+                    <p className="text-muted-foreground">
+                      My approach focuses on understanding business goals and target audiences to create tailored marketing solutions that deliver measurable results, whether it's increasing brand awareness, generating leads, or driving conversions.
+                    </p>
+                  </div>
                   
-                  <p className="text-gray-600 mb-6">
-                    My approach focuses on understanding business goals and target audiences to create tailored marketing solutions that deliver measurable results, whether it's increasing brand awareness, generating leads, or driving conversions.
-                  </p>
-                  
-                  <div className="flex flex-wrap gap-3 mt-8">
-                    <span className="bg-gray-100 text-gray-800 rounded-full px-4 py-2 text-sm font-medium">SEO</span>
-                    <span className="bg-gray-100 text-gray-800 rounded-full px-4 py-2 text-sm font-medium">Social Media</span>
-                    <span className="bg-gray-100 text-gray-800 rounded-full px-4 py-2 text-sm font-medium">Content Marketing</span>
-                    <span className="bg-gray-100 text-gray-800 rounded-full px-4 py-2 text-sm font-medium">PPC</span>
-                    <span className="bg-gray-100 text-gray-800 rounded-full px-4 py-2 text-sm font-medium">Analytics</span>
-                    <span className="bg-gray-100 text-gray-800 rounded-full px-4 py-2 text-sm font-medium">Email Marketing</span>
+                  {/* Skills Badges */}
+                  <div className="pt-4">
+                    <h3 className="text-lg font-semibold mb-4">Core Competencies</h3>
+                    <div className="flex flex-wrap gap-2">
+                      <Badge variant="secondary" className="px-4 py-2 text-sm font-medium">SEO</Badge>
+                      <Badge variant="secondary" className="px-4 py-2 text-sm font-medium">Social Media</Badge>
+                      <Badge variant="secondary" className="px-4 py-2 text-sm font-medium">Content Marketing</Badge>
+                      <Badge variant="secondary" className="px-4 py-2 text-sm font-medium">PPC</Badge>
+                      <Badge variant="secondary" className="px-4 py-2 text-sm font-medium">Analytics</Badge>
+                      <Badge variant="secondary" className="px-4 py-2 text-sm font-medium">Email Marketing</Badge>
+                    </div>
                   </div>
                 </div>
               </div>
