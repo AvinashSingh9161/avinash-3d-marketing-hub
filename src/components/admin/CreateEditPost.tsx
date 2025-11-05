@@ -3,11 +3,11 @@ import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Textarea } from "@/components/ui/textarea";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { useToast } from "@/hooks/use-toast";
-import { ArrowLeft, Save, Upload } from "lucide-react";
-import { Switch } from "@/components/ui/switch";
+import { ArrowLeft, Image as ImageIcon } from "lucide-react";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import ReactQuill from 'react-quill';
+import 'react-quill/dist/quill.snow.css';
 
 interface CreateEditPostProps {
   postId: string | null;
@@ -24,7 +24,46 @@ export const CreateEditPost = ({ postId, onClose, userId }: CreateEditPostProps)
   const [published, setPublished] = useState(false);
   const [loading, setLoading] = useState(false);
   const [uploading, setUploading] = useState(false);
+  const [categoryId, setCategoryId] = useState<string>("");
+  const [tags, setTags] = useState("");
+  const [categories, setCategories] = useState<any[]>([]);
+  const [authorName, setAuthorName] = useState("John Doe");
   const { toast } = useToast();
+
+  useEffect(() => {
+    loadCategories();
+    loadAuthorName();
+  }, []);
+
+  const loadCategories = async () => {
+    try {
+      const { data, error } = await supabase
+        .from("categories")
+        .select("*")
+        .order("name");
+      
+      if (error) throw error;
+      setCategories(data || []);
+    } catch (error: any) {
+      console.error("Error loading categories:", error);
+    }
+  };
+
+  const loadAuthorName = async () => {
+    try {
+      const { data, error } = await supabase
+        .from("profiles")
+        .select("full_name")
+        .eq("id", userId)
+        .single();
+      
+      if (data?.full_name) {
+        setAuthorName(data.full_name);
+      }
+    } catch (error: any) {
+      console.error("Error loading author name:", error);
+    }
+  };
 
   useEffect(() => {
     if (postId) {
@@ -48,6 +87,7 @@ export const CreateEditPost = ({ postId, onClose, userId }: CreateEditPostProps)
       setContent(data.content);
       setFeaturedImage(data.featured_image || "");
       setPublished(data.published);
+      setCategoryId(data.category_id || "");
     } catch (error: any) {
       toast({
         title: "Error loading post",
@@ -151,6 +191,7 @@ export const CreateEditPost = ({ postId, onClose, userId }: CreateEditPostProps)
         featured_image: featuredImage || null,
         published,
         author_id: userId,
+        category_id: categoryId || null,
         published_at: published ? new Date().toISOString() : null,
       };
 
@@ -191,92 +232,182 @@ export const CreateEditPost = ({ postId, onClose, userId }: CreateEditPostProps)
     }
   };
 
+  const modules = {
+    toolbar: [
+      [{ 'header': [1, 2, 3, false] }],
+      ['bold', 'italic', 'underline'],
+      [{ 'list': 'ordered'}, { 'list': 'bullet' }],
+      ['link', 'image'],
+      ['clean']
+    ],
+  };
+
   return (
-    <Card>
-      <CardHeader>
-        <div className="flex items-center justify-between">
-          <CardTitle>{postId ? "Edit Post" : "Create New Post"}</CardTitle>
-          <Button variant="ghost" size="sm" onClick={onClose}>
-            <ArrowLeft className="mr-2 h-4 w-4" /> Back
-          </Button>
-        </div>
-      </CardHeader>
-      <CardContent className="space-y-6">
-        <div className="space-y-2">
-          <Label htmlFor="title">Title *</Label>
-          <Input
-            id="title"
-            value={title}
-            onChange={(e) => handleTitleChange(e.target.value)}
-            placeholder="Enter post title"
-          />
-        </div>
-
-        <div className="space-y-2">
-          <Label htmlFor="slug">Slug *</Label>
-          <Input
-            id="slug"
-            value={slug}
-            onChange={(e) => setSlug(generateSlug(e.target.value))}
-            placeholder="post-url-slug"
-          />
-        </div>
-
-        <div className="space-y-2">
-          <Label htmlFor="excerpt">Excerpt</Label>
-          <Textarea
-            id="excerpt"
-            value={excerpt}
-            onChange={(e) => setExcerpt(e.target.value)}
-            placeholder="Brief description of the post"
-            rows={3}
-          />
-        </div>
-
-        <div className="space-y-2">
-          <Label htmlFor="content">Content *</Label>
-          <Textarea
-            id="content"
-            value={content}
-            onChange={(e) => setContent(e.target.value)}
-            placeholder="Write your blog post content here..."
-            rows={12}
-          />
-        </div>
-
-        <div className="space-y-2">
-          <Label htmlFor="image">Featured Image</Label>
-          <div className="flex gap-4">
-            <Input
-              id="image"
-              type="file"
-              accept="image/*"
-              onChange={handleImageUpload}
-              disabled={uploading}
-            />
-            {uploading && <span className="text-sm text-muted-foreground">Uploading...</span>}
+    <div className="min-h-screen bg-background">
+      {/* Header */}
+      <div className="border-b bg-card">
+        <div className="container mx-auto px-6 py-4">
+          <div className="flex items-center justify-between">
+            <div className="flex items-center gap-4">
+              <Button variant="ghost" size="sm" onClick={onClose}>
+                <ArrowLeft className="h-4 w-4 mr-2" />
+                Back
+              </Button>
+              <h1 className="text-2xl font-bold">
+                {postId ? "Edit Post" : "Create New Post"}
+              </h1>
+            </div>
+            <div className="flex gap-3">
+              <Button 
+                variant="outline" 
+                onClick={() => handleSave()}
+                disabled={loading}
+              >
+                Save Draft
+              </Button>
+              <Button 
+                onClick={() => {
+                  setPublished(true);
+                  handleSave();
+                }}
+                disabled={loading}
+              >
+                {loading ? "Publishing..." : "Publish"}
+              </Button>
+            </div>
           </div>
-          {featuredImage && (
-            <img src={featuredImage} alt="Preview" className="mt-2 max-w-xs rounded-lg" />
-          )}
         </div>
+      </div>
 
-        <div className="flex items-center space-x-2">
-          <Switch
-            id="published"
-            checked={published}
-            onCheckedChange={setPublished}
-          />
-          <Label htmlFor="published">Publish post</Label>
-        </div>
+      {/* Main Content */}
+      <div className="container mx-auto px-6 py-8">
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+          {/* Editor Area */}
+          <div className="lg:col-span-2 space-y-6">
+            <div>
+              <Input
+                value={title}
+                onChange={(e) => handleTitleChange(e.target.value)}
+                placeholder="Blog Title"
+                className="text-2xl font-semibold h-14 border-0 px-0 focus-visible:ring-0 placeholder:text-muted-foreground/50"
+              />
+            </div>
 
-        <div className="flex gap-4">
-          <Button onClick={handleSave} disabled={loading} className="flex-1">
-            <Save className="mr-2 h-4 w-4" />
-            {loading ? "Saving..." : postId ? "Update Post" : "Create Post"}
-          </Button>
+            <div className="border rounded-lg overflow-hidden bg-card">
+              <ReactQuill
+                theme="snow"
+                value={content}
+                onChange={setContent}
+                modules={modules}
+                placeholder="Start writing your amazing blog post here..."
+                className="min-h-[500px] [&_.ql-editor]:min-h-[500px] [&_.ql-toolbar]:border-b [&_.ql-toolbar]:bg-muted/30 [&_.ql-container]:border-0"
+              />
+            </div>
+
+            <div className="space-y-2">
+              <Label htmlFor="excerpt">Excerpt</Label>
+              <Input
+                id="excerpt"
+                value={excerpt}
+                onChange={(e) => setExcerpt(e.target.value)}
+                placeholder="Brief description of the post (optional)"
+                className="h-12"
+              />
+            </div>
+
+            <div className="space-y-2">
+              <Label>Featured Image</Label>
+              <div className="border-2 border-dashed rounded-lg p-6 text-center hover:border-primary/50 transition-colors">
+                <input
+                  id="image-upload"
+                  type="file"
+                  accept="image/*"
+                  onChange={handleImageUpload}
+                  disabled={uploading}
+                  className="hidden"
+                />
+                <label htmlFor="image-upload" className="cursor-pointer">
+                  {featuredImage ? (
+                    <div className="space-y-4">
+                      <img 
+                        src={featuredImage} 
+                        alt="Featured" 
+                        className="max-h-64 mx-auto rounded-lg object-cover"
+                      />
+                      <p className="text-sm text-muted-foreground">
+                        Click to change image
+                      </p>
+                    </div>
+                  ) : (
+                    <div className="space-y-2">
+                      <ImageIcon className="h-12 w-12 mx-auto text-muted-foreground" />
+                      <p className="text-sm text-muted-foreground">
+                        {uploading ? "Uploading..." : "Click to upload featured image"}
+                      </p>
+                    </div>
+                  )}
+                </label>
+              </div>
+            </div>
+          </div>
+
+          {/* Sidebar - Post Settings */}
+          <div className="lg:col-span-1">
+            <div className="sticky top-8 space-y-6">
+              <div className="border rounded-lg p-6 bg-card space-y-6">
+                <h3 className="font-semibold text-lg">Post Settings</h3>
+                
+                <div className="space-y-2">
+                  <Label htmlFor="author">Author</Label>
+                  <Input
+                    id="author"
+                    value={authorName}
+                    disabled
+                    className="bg-muted"
+                  />
+                </div>
+
+                <div className="space-y-2">
+                  <Label htmlFor="category">Category</Label>
+                  <Select value={categoryId} onValueChange={setCategoryId}>
+                    <SelectTrigger id="category">
+                      <SelectValue placeholder="Select a category" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      {categories.map((category) => (
+                        <SelectItem key={category.id} value={category.id}>
+                          {category.name}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                </div>
+
+                <div className="space-y-2">
+                  <Label htmlFor="tags">Tags</Label>
+                  <Input
+                    id="tags"
+                    value={tags}
+                    onChange={(e) => setTags(e.target.value)}
+                    placeholder="Add tags, separated by commas"
+                  />
+                </div>
+
+                <div className="space-y-2">
+                  <Label htmlFor="slug">URL Slug</Label>
+                  <Input
+                    id="slug"
+                    value={slug}
+                    onChange={(e) => setSlug(generateSlug(e.target.value))}
+                    placeholder="post-url-slug"
+                    className="font-mono text-sm"
+                  />
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
-      </CardContent>
-    </Card>
+      </div>
+    </div>
   );
 };
