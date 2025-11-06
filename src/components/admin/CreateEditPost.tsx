@@ -28,6 +28,8 @@ export const CreateEditPost = ({ postId, onClose, userId }: CreateEditPostProps)
   const [tags, setTags] = useState("");
   const [categories, setCategories] = useState<any[]>([]);
   const [authorName, setAuthorName] = useState("John Doe");
+  const [isAddingCategory, setIsAddingCategory] = useState(false);
+  const [newCategoryName, setNewCategoryName] = useState("");
   const { toast } = useToast();
 
   useEffect(() => {
@@ -168,6 +170,44 @@ export const CreateEditPost = ({ postId, onClose, userId }: CreateEditPostProps)
       });
     } finally {
       setUploading(false);
+    }
+  };
+
+  const handleAddCategory = async () => {
+    if (!newCategoryName.trim()) {
+      toast({
+        title: "Category name required",
+        description: "Please enter a category name.",
+        variant: "destructive",
+      });
+      return;
+    }
+
+    try {
+      const slug = generateSlug(newCategoryName);
+      const { data, error } = await supabase
+        .from("categories")
+        .insert([{ name: newCategoryName, slug }])
+        .select()
+        .single();
+
+      if (error) throw error;
+
+      setCategories([...categories, data]);
+      setCategoryId(data.id);
+      setNewCategoryName("");
+      setIsAddingCategory(false);
+      
+      toast({
+        title: "Category added",
+        description: "New category has been created successfully.",
+      });
+    } catch (error: any) {
+      toast({
+        title: "Error adding category",
+        description: error.message,
+        variant: "destructive",
+      });
     }
   };
 
@@ -369,18 +409,59 @@ export const CreateEditPost = ({ postId, onClose, userId }: CreateEditPostProps)
 
                 <div className="space-y-2">
                   <Label htmlFor="category">Category</Label>
-                  <Select value={categoryId} onValueChange={setCategoryId}>
-                    <SelectTrigger id="category">
-                      <SelectValue placeholder="Select a category" />
-                    </SelectTrigger>
-                    <SelectContent>
-                      {categories.map((category) => (
-                        <SelectItem key={category.id} value={category.id}>
-                          {category.name}
-                        </SelectItem>
-                      ))}
-                    </SelectContent>
-                  </Select>
+                  {!isAddingCategory ? (
+                    <>
+                      <Select value={categoryId} onValueChange={setCategoryId}>
+                        <SelectTrigger id="category">
+                          <SelectValue placeholder="Select a category" />
+                        </SelectTrigger>
+                        <SelectContent>
+                          {categories.map((category) => (
+                            <SelectItem key={category.id} value={category.id}>
+                              {category.name}
+                            </SelectItem>
+                          ))}
+                        </SelectContent>
+                      </Select>
+                      <Button
+                        variant="outline"
+                        size="sm"
+                        onClick={() => setIsAddingCategory(true)}
+                        className="w-full mt-2"
+                      >
+                        + Add New Category
+                      </Button>
+                    </>
+                  ) : (
+                    <div className="space-y-2">
+                      <Input
+                        value={newCategoryName}
+                        onChange={(e) => setNewCategoryName(e.target.value)}
+                        placeholder="Enter category name"
+                        onKeyPress={(e) => e.key === 'Enter' && handleAddCategory()}
+                      />
+                      <div className="flex gap-2">
+                        <Button
+                          size="sm"
+                          onClick={handleAddCategory}
+                          className="flex-1"
+                        >
+                          Add
+                        </Button>
+                        <Button
+                          variant="outline"
+                          size="sm"
+                          onClick={() => {
+                            setIsAddingCategory(false);
+                            setNewCategoryName("");
+                          }}
+                          className="flex-1"
+                        >
+                          Cancel
+                        </Button>
+                      </div>
+                    </div>
+                  )}
                 </div>
 
                 <div className="space-y-2">
