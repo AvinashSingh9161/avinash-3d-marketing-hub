@@ -4,8 +4,12 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { useToast } from "@/hooks/use-toast";
-import { ArrowLeft, Image as ImageIcon } from "lucide-react";
+import { ArrowLeft, Image as ImageIcon, Calendar as CalendarIcon } from "lucide-react";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
+import { Calendar } from "@/components/ui/calendar";
+import { format } from "date-fns";
+import { cn } from "@/lib/utils";
 import ReactQuill from 'react-quill';
 import 'react-quill/dist/quill.snow.css';
 
@@ -30,6 +34,8 @@ export const CreateEditPost = ({ postId, onClose, userId }: CreateEditPostProps)
   const [authorName, setAuthorName] = useState("John Doe");
   const [isAddingCategory, setIsAddingCategory] = useState(false);
   const [newCategoryName, setNewCategoryName] = useState("");
+  const [scheduledDate, setScheduledDate] = useState<Date>();
+  const [scheduledTime, setScheduledTime] = useState("12:00");
   const { toast } = useToast();
 
   useEffect(() => {
@@ -90,6 +96,12 @@ export const CreateEditPost = ({ postId, onClose, userId }: CreateEditPostProps)
       setFeaturedImage(data.featured_image || "");
       setPublished(data.published);
       setCategoryId(data.category_id || "");
+      
+      if (data.scheduled_publish_at) {
+        const scheduledDateTime = new Date(data.scheduled_publish_at);
+        setScheduledDate(scheduledDateTime);
+        setScheduledTime(format(scheduledDateTime, "HH:mm"));
+      }
     } catch (error: any) {
       toast({
         title: "Error loading post",
@@ -211,7 +223,7 @@ export const CreateEditPost = ({ postId, onClose, userId }: CreateEditPostProps)
     }
   };
 
-  const handleSave = async (shouldPublish?: boolean) => {
+  const handleSave = async (shouldPublish?: boolean, shouldSchedule?: boolean) => {
     if (!title || !content || !slug) {
       toast({
         title: "Missing fields",
@@ -221,7 +233,38 @@ export const CreateEditPost = ({ postId, onClose, userId }: CreateEditPostProps)
       return;
     }
 
+    // Validate scheduled date if scheduling
+    if (shouldSchedule && !scheduledDate) {
+      toast({
+        title: "Schedule date required",
+        description: "Please select a date and time to schedule the post.",
+        variant: "destructive",
+      });
+      return;
+    }
+
     const isPublished = shouldPublish !== undefined ? shouldPublish : published;
+    
+    // Combine scheduled date and time
+    let scheduledPublishAt = null;
+    if (shouldSchedule && scheduledDate) {
+      const [hours, minutes] = scheduledTime.split(':');
+      const combined = new Date(scheduledDate);
+      combined.setHours(parseInt(hours), parseInt(minutes), 0, 0);
+      
+      // Validate that scheduled time is in the future
+      if (combined <= new Date()) {
+        toast({
+          title: "Invalid schedule time",
+          description: "Scheduled time must be in the future.",
+          variant: "destructive",
+        });
+        return;
+      }
+      
+      scheduledPublishAt = combined.toISOString();
+    }
+
     setLoading(true);
     try {
       const postData = {
@@ -234,6 +277,7 @@ export const CreateEditPost = ({ postId, onClose, userId }: CreateEditPostProps)
         author_id: userId,
         category_id: categoryId || null,
         published_at: isPublished ? new Date().toISOString() : null,
+        scheduled_publish_at: scheduledPublishAt,
       };
 
       if (postId) {
@@ -244,9 +288,13 @@ export const CreateEditPost = ({ postId, onClose, userId }: CreateEditPostProps)
 
         if (error) throw error;
 
+        const successMessage = shouldSchedule 
+          ? "Post scheduled successfully."
+          : "Post updated successfully.";
+        
         toast({
           title: "Post updated",
-          description: "Your blog post has been updated successfully.",
+          description: successMessage,
         });
       } else {
         const { error } = await supabase
@@ -255,9 +303,13 @@ export const CreateEditPost = ({ postId, onClose, userId }: CreateEditPostProps)
 
         if (error) throw error;
 
+        const successMessage = shouldSchedule 
+          ? "Post scheduled successfully."
+          : "Post created successfully.";
+        
         toast({
           title: "Post created",
-          description: "Your blog post has been created successfully.",
+          description: successMessage,
         });
       }
 
@@ -301,16 +353,23 @@ export const CreateEditPost = ({ postId, onClose, userId }: CreateEditPostProps)
             <div className="flex gap-3">
               <Button 
                 variant="outline" 
-                onClick={() => handleSave(false)}
+                onClick={() => handleSave(false, false)}
                 disabled={loading}
               >
                 Save Draft
               </Button>
               <Button 
-                onClick={() => handleSave(true)}
+                variant="secondary"
+                onClick={() => handleSave(false, true)}
                 disabled={loading}
               >
-                {loading ? "Publishing..." : "Publish"}
+                {loading ? "Scheduling..." : "Schedule"}
+              </Button>
+              <Button 
+                onClick={() => handleSave(true, false)}
+                disabled={loading}
+              >
+                {loading ? "Publishing..." : "Publish Now"}
               </Button>
             </div>
           </div>
@@ -481,6 +540,55 @@ export const CreateEditPost = ({ postId, onClose, userId }: CreateEditPostProps)
                     placeholder="post-url-slug"
                     className="font-mono text-sm"
                   />
+                </div>
+
+                <div className="pt-4 border-t space-y-4">
+                  <h4 className="font-semibold text-sm">Schedule Publishing</h4>
+                  
+                  <div className="space-y-2">
+                    <Label>Date</Label>
+                    <Popover>
+                      <PopoverTrigger asChild>
+                        <Button
+                          variant="outline"
+                          className={cn(
+                            "w-full justify-start text-left font-normal",
+                            !scheduledDate && "text-muted-foreground"
+                          )}
+                        >
+                          <CalendarIcon className="mr-2 h-4 w-4" />
+                          {scheduledDate ? format(scheduledDate, "PPP") : <span>Pick a date</span>}
+                        </Button>
+                      </PopoverTrigger>
+                      <PopoverContent className="w-auto p-0" align="start">
+                        <Calendar
+                          mode="single"
+                          selected={scheduledDate}
+                          onSelect={setScheduledDate}
+                          disabled={(date) => date < new Date(new Date().setHours(0, 0, 0, 0))}
+                          initialFocus
+                          className="pointer-events-auto"
+                        />
+                      </PopoverContent>
+                    </Popover>
+                  </div>
+
+                  <div className="space-y-2">
+                    <Label htmlFor="time">Time</Label>
+                    <Input
+                      id="time"
+                      type="time"
+                      value={scheduledTime}
+                      onChange={(e) => setScheduledTime(e.target.value)}
+                      className="w-full"
+                    />
+                  </div>
+
+                  {scheduledDate && (
+                    <p className="text-sm text-muted-foreground">
+                      Post will be published on {format(scheduledDate, "PPP")} at {scheduledTime}
+                    </p>
+                  )}
                 </div>
               </div>
             </div>

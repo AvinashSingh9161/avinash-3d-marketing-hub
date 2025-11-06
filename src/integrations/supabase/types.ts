@@ -25,6 +25,7 @@ export type Database = {
           id: string
           published: boolean
           published_at: string | null
+          scheduled_publish_at: string | null
           slug: string
           title: string
           updated_at: string
@@ -39,6 +40,7 @@ export type Database = {
           id?: string
           published?: boolean
           published_at?: string | null
+          scheduled_publish_at?: string | null
           slug: string
           title: string
           updated_at?: string
@@ -53,6 +55,7 @@ export type Database = {
           id?: string
           published?: boolean
           published_at?: string | null
+          scheduled_publish_at?: string | null
           slug?: string
           title?: string
           updated_at?: string
@@ -284,6 +287,12 @@ export type Database = {
           _user_id: string
         }
         Returns: boolean
+      }
+      publish_scheduled_posts: {
+        Args: never
+        Returns: {
+          published_count: number
+        }[]
       }
     }
     Enums: {
