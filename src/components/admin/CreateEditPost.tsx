@@ -211,7 +211,7 @@ export const CreateEditPost = ({ postId, onClose, userId }: CreateEditPostProps)
     }
   };
 
-  const handleSave = async () => {
+  const handleSave = async (shouldPublish?: boolean) => {
     if (!title || !content || !slug) {
       toast({
         title: "Missing fields",
@@ -221,6 +221,7 @@ export const CreateEditPost = ({ postId, onClose, userId }: CreateEditPostProps)
       return;
     }
 
+    const isPublished = shouldPublish !== undefined ? shouldPublish : published;
     setLoading(true);
     try {
       const postData = {
@@ -229,10 +230,10 @@ export const CreateEditPost = ({ postId, onClose, userId }: CreateEditPostProps)
         excerpt,
         content,
         featured_image: featuredImage || null,
-        published,
+        published: isPublished,
         author_id: userId,
         category_id: categoryId || null,
-        published_at: published ? new Date().toISOString() : null,
+        published_at: isPublished ? new Date().toISOString() : null,
       };
 
       if (postId) {
@@ -300,16 +301,13 @@ export const CreateEditPost = ({ postId, onClose, userId }: CreateEditPostProps)
             <div className="flex gap-3">
               <Button 
                 variant="outline" 
-                onClick={() => handleSave()}
+                onClick={() => handleSave(false)}
                 disabled={loading}
               >
                 Save Draft
               </Button>
               <Button 
-                onClick={() => {
-                  setPublished(true);
-                  handleSave();
-                }}
+                onClick={() => handleSave(true)}
                 disabled={loading}
               >
                 {loading ? "Publishing..." : "Publish"}
