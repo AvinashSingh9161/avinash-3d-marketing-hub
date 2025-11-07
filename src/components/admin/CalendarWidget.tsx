@@ -4,7 +4,8 @@ import { Button } from "@/components/ui/button";
 import { useState } from "react";
 
 export const CalendarWidget = () => {
-  const [currentDate, setCurrentDate] = useState(new Date(2024, 6)); // July 2024
+  const [currentDate, setCurrentDate] = useState(new Date());
+  const today = new Date();
 
   const monthNames = [
     "January", "February", "March", "April", "May", "June",
@@ -62,20 +63,27 @@ export const CalendarWidget = () => {
               {day}
             </div>
           ))}
-          {days.map((day, i) => (
-            <div
-              key={i}
-              className={`text-sm py-2 rounded-md ${
-                day === 5
-                  ? "bg-primary text-primary-foreground font-medium"
-                  : day
-                  ? "hover:bg-accent cursor-pointer"
-                  : ""
-              }`}
-            >
-              {day || ""}
-            </div>
-          ))}
+          {days.map((day, i) => {
+            const isToday = day && 
+              currentDate.getMonth() === today.getMonth() &&
+              currentDate.getFullYear() === today.getFullYear() &&
+              day === today.getDate();
+            
+            return (
+              <div
+                key={i}
+                className={`text-sm py-2 rounded-md ${
+                  isToday
+                    ? "bg-primary text-primary-foreground font-medium"
+                    : day
+                    ? "hover:bg-accent cursor-pointer transition-colors"
+                    : ""
+                }`}
+              >
+                {day || ""}
+              </div>
+            );
+          })}
         </div>
       </CardContent>
     </Card>
