@@ -4,7 +4,8 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { useToast } from "@/hooks/use-toast";
-import { Edit, Trash2, Eye } from "lucide-react";
+import { Edit, Trash2, Eye, Clock } from "lucide-react";
+import { format } from "date-fns";
 import {
   AlertDialog,
   AlertDialogAction,
@@ -22,6 +23,7 @@ interface BlogPost {
   excerpt: string | null;
   published: boolean;
   created_at: string;
+  scheduled_publish_at: string | null;
   categories: { name: string } | null;
 }
 
@@ -46,6 +48,7 @@ export const BlogPostList = ({ onEdit, userId }: BlogPostListProps) => {
           excerpt,
           published,
           created_at,
+          scheduled_publish_at,
           categories (name)
         `)
         .eq("author_id", userId)
@@ -126,6 +129,12 @@ export const BlogPostList = ({ onEdit, userId }: BlogPostListProps) => {
                     <Badge variant={post.published ? "default" : "secondary"}>
                       {post.published ? "Published" : "Draft"}
                     </Badge>
+                    {post.scheduled_publish_at && !post.published && (
+                      <Badge variant="outline" className="gap-1">
+                        <Clock className="h-3 w-3" />
+                        Scheduled: {format(new Date(post.scheduled_publish_at), "MMM d, h:mm a")}
+                      </Badge>
+                    )}
                     {post.categories && (
                       <Badge variant="outline">{post.categories.name}</Badge>
                     )}

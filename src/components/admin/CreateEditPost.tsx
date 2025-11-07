@@ -223,6 +223,34 @@ export const CreateEditPost = ({ postId, onClose, userId }: CreateEditPostProps)
     }
   };
 
+  const handleCancelSchedule = async () => {
+    setLoading(true);
+    try {
+      const { error } = await supabase
+        .from("blog_posts")
+        .update({ scheduled_publish_at: null })
+        .eq("id", postId);
+
+      if (error) throw error;
+
+      setScheduledDate(undefined);
+      setScheduledTime("12:00");
+      
+      toast({
+        title: "Schedule cancelled",
+        description: "The post schedule has been removed.",
+      });
+    } catch (error: any) {
+      toast({
+        title: "Error cancelling schedule",
+        description: error.message,
+        variant: "destructive",
+      });
+    } finally {
+      setLoading(false);
+    }
+  };
+
   const handleSave = async (shouldPublish?: boolean, shouldSchedule?: boolean) => {
     if (!title || !content || !slug) {
       toast({
@@ -585,9 +613,22 @@ export const CreateEditPost = ({ postId, onClose, userId }: CreateEditPostProps)
                   </div>
 
                   {scheduledDate && (
-                    <p className="text-sm text-muted-foreground">
-                      Post will be published on {format(scheduledDate, "PPP")} at {scheduledTime}
-                    </p>
+                    <div className="space-y-2">
+                      <p className="text-sm text-muted-foreground">
+                        Post will be published on {format(scheduledDate, "PPP")} at {scheduledTime}
+                      </p>
+                      {postId && (
+                        <Button
+                          variant="outline"
+                          size="sm"
+                          onClick={handleCancelSchedule}
+                          disabled={loading}
+                          className="w-full"
+                        >
+                          Cancel Schedule
+                        </Button>
+                      )}
+                    </div>
                   )}
                 </div>
               </div>
