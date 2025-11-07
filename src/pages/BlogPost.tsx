@@ -166,10 +166,8 @@ const BlogPost = () => {
 
             <div 
               className="prose prose-lg dark:prose-invert max-w-none"
-              style={{ whiteSpace: "pre-wrap" }}
-            >
-              {post.content}
-            </div>
+              dangerouslySetInnerHTML={{ __html: post.content }}
+            />
 
             {post.profiles && (post.profiles.bio || post.profiles.avatar_url) && (
               <div className="mt-12 pt-8 border-t">
