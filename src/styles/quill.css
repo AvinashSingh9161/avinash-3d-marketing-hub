@@ -1,0 +1,115 @@
+/* Quill Editor content styles for blog post display */
+.ql-editor {
+  padding: 0;
+}
+
+.blog-content img {
+  max-width: 100%;
+  height: auto;
+  display: block;
+  margin: 1.5rem auto;
+  border-radius: 0.5rem;
+}
+
+.blog-content h1 {
+  font-size: 2.25rem;
+  line-height: 2.5rem;
+  font-weight: 700;
+  margin: 2rem 0 1rem;
+}
+
+.blog-content h2 {
+  font-size: 1.875rem;
+  line-height: 2.25rem;
+  font-weight: 600;
+  margin: 1.75rem 0 1rem;
+}
+
+.blog-content h3 {
+  font-size: 1.5rem;
+  line-height: 2rem;
+  font-weight: 600;
+  margin: 1.5rem 0 1rem;
+}
+
+.blog-content p {
+  margin: 1rem 0;
+  line-height: 1.75;
+}
+
+.blog-content ul, .blog-content ol {
+  margin: 1rem 0;
+  padding-left: 2rem;
+}
+
+.blog-content ul {
+  list-style-type: disc;
+}
+
+.blog-content ol {
+  list-style-type: decimal;
+}
+
+.blog-content li {
+  margin: 0.5rem 0;
+  line-height: 1.75;
+}
+
+.blog-content a {
+  color: var(--primary);
+  text-decoration: underline;
+}
+
+.blog-content blockquote {
+  border-left: 4px solid var(--primary);
+  padding-left: 1rem;
+  margin: 1.5rem 0;
+  font-style: italic;
+  color: var(--muted-foreground);
+}
+
+.blog-content pre {
+  background: var(--muted);
+  padding: 1rem;
+  border-radius: 0.5rem;
+  overflow-x: auto;
+  margin: 1.5rem 0;
+}
+
+.blog-content code {
+  background: var(--muted);
+  padding: 0.2rem 0.4rem;
+  border-radius: 0.25rem;
+  font-size: 0.875rem;
+}
+
+.blog-content table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 1.5rem 0;
+}
+
+.blog-content th, .blog-content td {
+  border: 1px solid var(--border);
+  padding: 0.75rem;
+  text-align: left;
+}
+
+.blog-content th {
+  background: var(--muted);
+  font-weight: 600;
+}
+
+/* Dark mode adjustments */
+:root[class~="dark"] .blog-content a {
+  color: var(--primary);
+}
+
+:root[class~="dark"] .blog-content blockquote {
+  border-left-color: var(--primary);
+}
+
+:root[class~="dark"] .blog-content pre,
+:root[class~="dark"] .blog-content code {
+  background: var(--muted);
+}

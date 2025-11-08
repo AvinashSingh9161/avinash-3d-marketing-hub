@@ -3,5 +3,16 @@
 /services /projects 301
 /portfolio /projects 301
 
-# SPA fallback
+# Handle direct routes
+/blog/* /index.html 200
+/projects/* /index.html 200
+/contact /index.html 200
+/admin/* /index.html 200
+/auth /index.html 200
+
+# Specific redirects for SEO
+/blog /blog 200
+/projects /projects 200
+
+# SPA fallback - must be last
 /* /index.html 200

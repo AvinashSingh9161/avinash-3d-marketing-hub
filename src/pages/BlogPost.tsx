@@ -7,6 +7,7 @@ import { Button } from "@/components/ui/button";
 import PageLayout from "@/components/layout/PageLayout";
 import { Calendar, User, ArrowLeft } from "lucide-react";
 import { format } from "date-fns";
+import '@/styles/quill.css';
 
 interface BlogPostData {
   id: string;
@@ -165,7 +166,7 @@ const BlogPost = () => {
             )}
 
             <div 
-              className="prose prose-lg dark:prose-invert max-w-none"
+              className="prose prose-lg dark:prose-invert max-w-none blog-content ql-editor"
               dangerouslySetInnerHTML={{ __html: post.content }}
             />
 

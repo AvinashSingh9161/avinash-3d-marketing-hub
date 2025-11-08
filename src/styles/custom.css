@@ -1,0 +1,55 @@
+/* Custom utility classes */
+.font-inter {
+  font-family: 'Inter', sans-serif;
+}
+
+.font-poppins {
+  font-family: 'Poppins', sans-serif;
+}
+
+.gradient-text {
+  background-clip: text;
+  -webkit-background-clip: text;
+  color: transparent;
+  background-image: linear-gradient(to right, var(--brand-purple), var(--brand-blue), var(--brand-orange));
+}
+
+.card-3d {
+  background-color: white;
+  border-radius: 0.75rem;
+  box-shadow: var(--shadow-3d);
+  transition: all 0.3s;
+}
+
+.card-3d:hover {
+  box-shadow: var(--shadow-3d-hover);
+  transform: translateY(-8px);
+}
+
+.bg-gradient-animation {
+  background-size: 300% 300%;
+  background-image: linear-gradient(to right, var(--brand-purple), var(--brand-blue), var(--brand-orange));
+  animation: gradient-background 15s ease infinite;
+}
+
+/* Custom hover state for Lovable badge close button */
+#lovable-badge-close {
+  min-width: 24px !important;
+  min-height: 24px !important;
+  width: 24px !important;
+  height: 24px !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  padding: 0 !important;
+  font-size: 16px !important;
+  line-height: 1 !important;
+}
+
+:root {
+  --brand-purple: #8B5CF6;
+  --brand-blue: #0EA5E9;
+  --brand-orange: #F97316;
+  --shadow-3d: 0 10px 30px -5px rgba(0, 0, 0, 0.3);
+  --shadow-3d-hover: 0 20px 40px -5px rgba(0, 0, 0, 0.4);
+}

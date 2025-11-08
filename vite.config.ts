@@ -8,6 +8,13 @@ export default defineConfig(({ mode }) => ({
   server: {
     host: "::",
     port: 8080,
+    strictPort: true,
+    historyApiFallback: {
+      rewrites: [
+        { from: /^\/blog\/.*$/, to: '/index.html' },
+        { from: /./, to: '/index.html' }
+      ]
+    }
   },
   plugins: [
     react(),

@@ -32,7 +32,7 @@ const App = () => (
         <TooltipProvider>
           <Toaster />
           <Sonner />
-          <BrowserRouter>
+          <BrowserRouter basename={import.meta.env.BASE_URL || '/'}>
             <AnalyticsTracker />
             <Suspense fallback={
               <div className="flex items-center justify-center min-h-screen">
